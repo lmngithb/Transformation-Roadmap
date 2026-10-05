@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roadmap — Group 1, Maersk digital transformation</title>
+<meta name="description" content="Editable Crawl / Walk / Run timeline with named dependencies.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --bg:#DCE2E7; --panel:#F4F5F7; --panel-2:#ECEEF1; --panel-3:#E0E4E8;
+  --ink:#101316; --ink-2:#56606A; --ink-3:#8A949C; --black:#101316;
+  --blue:#42B0D5; --blue-2:#9BD3E8; --blue-3:#D3EBF5; --blue-4:#EAF5FA; --link:#0A78AB;
+  --tint:#E0E4E8; --tint-2:#C9D0D6; --paper:var(--bg); --deep:#0E3F58;
+  --mint:#D3EBF5; --lime:#D3EBF5;
+  --crawl:#B6DCEC; --walk:#6DBDDE; --run:#2E92BF;
+  --green:#2E9E6B; --amber:#E0A126; --red:#D5524E;
+  --r-xl:26px; --r-lg:22px; --r-md:16px; --r-sm:12px;
+  --line:rgba(16,19,22,.08);
+  --shadow:0 8px 28px rgba(16,19,22,.06); --rail:0px;
+  --font:'Outfit',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--bg);font-size:15px;line-height:1.55;overflow-x:hidden;letter-spacing:0}
+h1,h2,h3,h4,h5{margin:0;line-height:1.15;font-weight:400;letter-spacing:-.015em}
+a{color:var(--link)}button{font-family:inherit}img{max-width:100%}
+.bg{position:fixed;inset:0;z-index:-3;background:var(--bg);overflow:hidden}
+.bg.has-photo{background-size:cover,cover;background-position:center,center;background-repeat:no-repeat}
+.bg.duo::after{content:"";position:absolute;inset:0;background:#4F8FAF;mix-blend-mode:color}
+.bg.has-photo .bl,.bg.has-photo .arcs{display:none}
+.bl{position:absolute;border-radius:50%;filter:blur(90px);opacity:.2}
+.bl.b1{left:-10%;top:-16%;width:40vw;height:40vw;background:#7FB0CB}
+.bl.b2{right:-12%;bottom:-18%;width:38vw;height:38vw;background:#93AEBF}
+.bl.b3{display:none}
+.arcs{position:absolute;inset:0;width:100%;height:100%}
+.bgveil{position:fixed;inset:0;z-index:-2;pointer-events:none;background:rgba(244,246,248,var(--va,0))}
+body.nav-pinned{--rail:94px}
+.acct-tile,.zone.az,.rm4>div,.mini,.mc,.ic2,.bx,.pill:hover,.wc,.askc .chips a,.seg button.on,.lrow .ib2,.lrow .ar{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+@media (max-width:900px){body.nav-pinned{--rail:0px}}
+
+/* ---------- glass (one level only: never nest backdrop-filter) ---------- */
+.glass{background:rgba(244,245,247,.86);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:0;border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.soft{background:var(--panel-2);border:0;border-radius:var(--r-md)}
+.gz{background:rgba(255,255,255,.36);-webkit-backdrop-filter:blur(18px) saturate(1.1);backdrop-filter:blur(18px) saturate(1.1);border:1px solid rgba(255,255,255,.55);border-radius:var(--r-lg);box-shadow:0 14px 40px rgba(16,40,60,.08)}
+/* controls: soft gray keys, black for the main action */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:9px 16px;border-radius:13px;border:0;background:rgba(224,228,232,.62);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--ink);font:400 14px var(--font);cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,transform .15s}
+.btn:hover{background:rgba(204,211,217,.82)}.btn:active{transform:translateY(1px)}
+.btn.arr::after{content:"\2197";font-size:13px;opacity:.7}
+.btn.dark{background:var(--ink);color:#fff}.btn.dark:hover{background:#2A3138}.btn.dark.arr::after{opacity:.8}
+.btn.light{background:rgba(255,255,255,.9)}.btn.light:hover{background:#fff}
+.btn.blue{background:var(--blue);color:#06222E}.btn.blue:hover{background:#5BC0E2}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:11px}
+.btn.icon{width:38px;height:38px;padding:0;border-radius:13px}
+.btn.on{background:var(--ink);color:#fff}
+.btn:focus-visible,a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.seg{display:inline-flex;padding:4px;border-radius:15px;background:rgba(224,228,232,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.seg button{border:0;background:transparent;padding:7px 15px;border-radius:11px;font:400 14px var(--font);color:var(--ink-2);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,19,22,.10)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:400;border-radius:10px;padding:3px 10px;background:rgba(224,228,232,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--ink-2)}
+.eyebrow,.tagc{display:inline-block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:400;padding:0;background:none;color:var(--ink-3)}
+.wrap{width:min(1180px,90vw);margin:0 auto}
+
+/* ---------- compact page header (roadmap, RACI) ---------- */
+.mh{display:flex;align-items:center;gap:14px;width:fit-content;max-width:100%;padding:9px 22px 9px 10px;border-radius:20px}
+.mh .ic{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.55);display:grid;place-items:center;flex:none}
+.mh .ic svg{width:21px;height:21px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mh h1{font-size:24px;font-weight:300;letter-spacing:-.02em;white-space:nowrap;line-height:1.1}
+.mh small{display:block;font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.sec{width:min(1240px,calc(100% - 40px));margin:28px auto 0}
+.sec-h{margin:0 0 14px}.sec-h h2{font-weight:300;font-size:clamp(26px,2.8vw,38px);letter-spacing:-.025em}.sec-h p{margin:6px 0 0;color:var(--ink-2);max-width:72ch}
+.tbl{overflow-x:auto;border-radius:var(--r-lg)}
+table.t{border-collapse:collapse;width:100%;font-size:14.5px}
+table.t th{text-align:left;padding:13px 16px;font-weight:500;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap}
+table.t td{padding:14px 16px;border-top:1px solid var(--line);vertical-align:top}
+table.t td.mono{font-weight:700;color:var(--link);white-space:nowrap}
+.fate{display:inline-block;font-size:12.5px;font-weight:400;border-radius:9px;padding:2px 10px;background:var(--blue-3);color:#17566f;white-space:nowrap}.fate.no{background:var(--panel-3);color:var(--ink-3)}
+.note-box{padding:16px 22px;border-left:4px solid var(--amber)}
+ul.refs{padding-left:20px;margin:6px 0;color:var(--ink-2);font-size:14.5px}ul.refs li{margin:6px 0}
+.page-end{height:120px}
+.av{position:relative;overflow:hidden;flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;font-weight:600;color:#17566f;background:hsl(var(--h,200) 70% 82%);box-shadow:inset 0 0 0 2px rgba(255,255,255,.85)}.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* ---------- left rail (auto-hide): a quiet column of keys, grouped like a tool palette ---------- */
+.nav-hot{position:fixed;left:0;top:0;bottom:0;width:26px;z-index:110}
+.gn-handle{position:fixed;left:5px;top:50%;transform:translateY(-50%);width:5px;height:64px;border-radius:5px;border:0;padding:0;background:var(--ink);opacity:.35;z-index:109;cursor:pointer;transition:opacity .3s,width .2s}
+.gn-handle:hover{width:8px;opacity:.6}body.nav-open .gn-handle{opacity:0}
+.gnav{position:fixed;left:14px;top:14px;bottom:14px;width:66px;z-index:120;display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px 8px;border-radius:26px;background:rgba(244,245,247,.7)!important;-webkit-backdrop-filter:blur(22px) saturate(1.1);backdrop-filter:blur(22px) saturate(1.1);border:1px solid rgba(255,255,255,.55);box-shadow:0 14px 40px rgba(16,19,22,.14)!important;transform:translateX(calc(-100% - 30px));transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.gnav.show{transform:none}
+.gn-logo{width:44px;height:44px;border-radius:50%;background:var(--blue);display:grid;place-items:center;margin:2px 0 4px}
+.gn-logo i{width:14px;height:14px;border:3px solid var(--ink);border-left-color:transparent;border-bottom-color:transparent;transform:rotate(45deg) translate(-2px,2px);border-radius:2px}
+.gn-grp{display:flex;flex-direction:column;gap:4px;padding:5px;border-radius:18px;background:rgba(236,238,241,.55);width:100%;align-items:center}
+.gn-links{display:flex;flex-direction:column;gap:4px}.gn-spacer{flex:1}
+.gn-ico{position:relative;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:var(--ink-2);background:transparent;border:0;cursor:pointer;transition:background .18s,color .18s;text-decoration:none}
+.gn-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.gn-ico:hover{background:var(--panel-3);color:var(--ink)}.gn-ico.on{background:var(--panel-3);color:var(--ink)}
+body.edits-on #rvToggle{background:#FFE770;color:#4a3b00}
+body.nav-pinned .gnav{transform:none}body.nav-pinned .gn-handle,body.nav-pinned .nav-hot{display:none}
+#navMode.on{background:var(--ink);color:#fff}
+.gn-ico em{position:absolute;right:2px;top:2px;font-style:normal;font-size:10px;font-weight:500;background:var(--ink);color:#fff;border-radius:8px;min-width:16px;padding:0 4px;text-align:center}
+.gn-ico[data-tip]::after{content:attr(data-tip);position:absolute;left:calc(100% + 14px);top:50%;transform:translateY(-50%) translateX(-6px);white-space:nowrap;font-size:13px;font-weight:400;background:var(--ink);color:#fff;padding:6px 12px;border-radius:10px;opacity:0;pointer-events:none;transition:.18s}
+.gn-ico:hover::after{opacity:1;transform:translateY(-50%)}
+.acct{position:relative}
+.gn-av{width:44px;height:44px;border-radius:14px;padding:0;border:0;overflow:hidden;cursor:pointer;background:#fff;display:block}.gn-av img{width:100%;height:100%;display:block}
+.acct-pop{position:absolute;left:calc(100% + 24px);bottom:-4px;width:300px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;opacity:0;pointer-events:none;transform:translateX(-12px) scale(.97);transform-origin:left bottom;transition:opacity .25s,transform .25s;background:rgba(244,245,247,.74);-webkit-backdrop-filter:blur(22px) saturate(1.1);backdrop-filter:blur(22px) saturate(1.1);border:1px solid rgba(255,255,255,.55);border-radius:var(--r-lg);box-shadow:0 18px 50px rgba(16,19,22,.18)}
+.acct-pop::before{content:"";position:absolute;left:-28px;top:0;bottom:0;width:28px}
+.acct:hover .acct-pop,.acct.open .acct-pop{opacity:1;pointer-events:auto;transform:none}
+.acct-h{grid-column:1/-1;font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:400;color:var(--ink-3)}
+.acct-tile{aspect-ratio:1/1;border-radius:var(--r-md);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:var(--ink);background:rgba(255,255,255,.5);text-align:center;padding:8px;transition:background .16s}
+.acct-tile:hover{background:var(--panel-3)}
+.acct-tile img{width:56px;height:56px;border-radius:16px}.acct-tile b{font-size:13.5px;font-weight:500}.acct-tile small{font-size:11.5px;color:var(--ink-3);line-height:1.2}
+.acct-tile.cur{box-shadow:inset 0 0 0 2px var(--blue)}
+
+/* ---------- page change: native slide transition (instant, no wait) ---------- */
+@view-transition{navigation:auto}
+::view-transition-group(root){animation-duration:.8s}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.8s;animation-timing-function:cubic-bezier(.76,0,.18,1);animation-fill-mode:both;mix-blend-mode:normal}
+::view-transition-old(root){animation-name:vtOldF}
+::view-transition-new(root){animation-name:vtNewF;box-shadow:0 -30px 80px rgba(8,20,28,.28)}
+html[data-vt=back]::view-transition-old(root){animation-name:vtOldB}
+html[data-vt=back]::view-transition-new(root){animation-name:vtNewB;box-shadow:0 30px 80px rgba(8,20,28,.28)}
+@keyframes vtOldF{to{transform:translateY(-24%) scale(.96);filter:brightness(.85)}}
+@keyframes vtNewF{from{transform:translateY(100%);border-radius:36px 36px 0 0}to{transform:none;border-radius:0}}
+@keyframes vtOldB{to{transform:translateY(24%) scale(.96);filter:brightness(.85)}}
+@keyframes vtNewB{from{transform:translateY(-100%);border-radius:0 0 36px 36px}to{transform:none;border-radius:0}}
+/* fallback (file:// or older browsers): slide only, no opacity on the wrapper, no lingering animation */
+.stage{position:relative;z-index:1;padding-left:var(--rail);transition:padding-left .35s cubic-bezier(.2,.8,.2,1)}
+html.leaving-down .stage{transition:transform .55s cubic-bezier(.76,0,.18,1);transform:translateY(-60px)}
+html.leaving-up .stage{transition:transform .55s cubic-bezier(.76,0,.18,1);transform:translateY(60px)}
+html.enter-down .stage{animation:fbUp .7s cubic-bezier(.2,.8,.2,1) backwards}
+html.enter-up .stage{animation:fbDown .7s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes fbUp{from{transform:translateY(100vh)}}@keyframes fbDown{from{transform:translateY(-100vh)}}
+.pager{position:fixed;left:50%;bottom:22px;z-index:90;transform:translate(-50%,24px);opacity:0;pointer-events:none;transition:.35s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;gap:10px;padding:8px 18px 8px 8px;border-radius:16px;background:var(--ink);color:#fff;font-size:13.5px;font-weight:400;cursor:pointer;box-shadow:0 12px 30px rgba(20,24,27,.35)}
+.pager.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.pager i{width:26px;height:26px;border-radius:9px;background:var(--panel-3);color:var(--ink);display:grid;place-items:center;color:#07222D;font-style:normal;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(3px)}}
+.toast{position:fixed;left:50%;bottom:26px;z-index:140;transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.3s;padding:10px 18px;border-radius:14px;background:var(--black);color:#fff;font-size:14px;font-weight:400;box-shadow:0 10px 30px rgba(20,24,27,.3)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- review mode ---------- */
+body.edits-on .fix[data-kind=add]{background:#FFF08A;box-shadow:0 0 0 3px #FFF08A;border-radius:3px}
+body.edits-on .fix[data-kind=edit]{background:#FFC9D9;box-shadow:0 0 0 3px #FFC9D9;border-radius:3px}
+body.edits-on .fix[data-kind=verify]{background:#FFE2BD;box-shadow:0 0 0 2px #F2994A;border-radius:3px}
+body.edits-on .fix-block{position:relative}
+body.edits-on .fix-block::before{position:absolute;right:8px;top:-9px;font-size:10px;font-weight:800;letter-spacing:.08em;padding:1px 7px;border-radius:8px;color:#222;z-index:6}
+body.edits-on .fix-block[data-kind=add]::before{content:"ADDED";background:#FFE770}
+body.edits-on .fix-block[data-kind=edit]::before{content:"FIXED";background:#FFB6CB}
+body.edits-on .fix-block[data-kind=verify]::before{content:"VERIFY";background:#FFC98A}
+.flash{animation:flash 1.5s ease}
+@keyframes flash{0%,60%{outline:4px solid #F2994A;outline-offset:4px}100%{outline:4px solid transparent;outline-offset:4px}}
+.wc{display:none;margin-top:12px;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:#FFE770;color:#4a3b00;width:fit-content}body.edits-on .wc{display:block}
+.drawer{position:fixed;top:14px;right:14px;bottom:14px;width:min(430px,92vw);z-index:150;transform:translateX(calc(100% + 30px));transition:transform .4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.drawer.open{transform:none}
+.drawer-h{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.drawer-h h3{font-size:17px}
+.drawer-b{overflow:auto;padding:12px 16px 24px}.drawer-b .hint{font-size:13.5px;color:var(--ink-2);margin:0 0 6px}
+.di{display:block;width:100%;text-align:left;background:rgba(255,255,255,.7);border:1px solid #fff;border-radius:var(--r-sm);padding:10px 12px;margin:8px 0;cursor:pointer;font:inherit;font-size:14px;color:var(--ink)}.di:hover{border-color:var(--blue)}
+.di .k{display:inline-block;font-size:10.5px;font-weight:600;letter-spacing:.08em;padding:1px 8px;border-radius:7px;margin-right:8px}
+.di .k.add{background:#FFE770}.di .k.edit{background:#FFB6CB}.di .k.verify{background:#FFC98A}
+.di .sn{display:block;color:var(--ink-3);font-size:12.5px;margin-top:4px}
+.bgpop{position:fixed;left:calc(96px + 12px);bottom:18px;width:310px;z-index:135;padding:16px;opacity:0;pointer-events:none;transform:translateY(8px);transition:.22s}
+.bgpop.show{opacity:1;pointer-events:auto;transform:none}
+.bgpop h4{font-size:17px;font-weight:400;margin-bottom:4px}.bgpop p{margin:0 0 12px;font-size:12.5px;color:var(--ink-2);line-height:1.4}
+.bgpop .prev{height:84px;border-radius:14px;background:var(--panel-3) center/cover no-repeat;margin-bottom:12px;display:grid;place-items:center;font-size:12.5px;color:var(--ink-3)}
+.bgpop .row{display:flex;gap:8px;margin-bottom:10px}.bgpop input[type=text]{flex:1;min-width:0;padding:8px 12px;border-radius:12px;border:0;background:#fff;font:400 13.5px var(--font)}
+.bgpop label{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2);margin:8px 0 2px}.bgpop input[type=range]{width:100%;accent-color:var(--blue)}
+.bgpop .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+@media (max-width:760px){.acct-pop{width:250px}.mh h1{white-space:normal}}
+@media print{.gnav,.nav-hot,.gn-handle,.pager,.toast,.drawer{display:none!important}}
+
+
+.rm-screen{height:100vh;height:100svh;min-height:600px;display:flex;flex-direction:column;gap:10px;padding:14px 18px 16px 18px}
+.rm-top{display:flex;align-items:center;gap:12px 14px;flex-wrap:wrap;flex:none}
+.rm-bar{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;flex:1;min-width:0}
+.ck{display:inline-flex;gap:6px;align-items:center;font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;background:rgba(255,255,255,.7);border:1px solid #fff;color:var(--ink-2);white-space:nowrap}
+.ck::before{content:"\2713";color:var(--green);font-weight:800}.ck.warn{background:rgba(255,232,170,.9);color:#6d4d00}.ck.warn::before{content:"\26A0";color:#B27A00}
+.rm-act{display:flex;gap:8px;align-items:center;flex:none}
+.rm-board{position:relative;flex:1;min-height:420px}
+.tl{position:absolute;inset:0}
+.lane{position:absolute;top:0;border-radius:var(--r-xl);-webkit-backdrop-filter:blur(26px) saturate(1.6);backdrop-filter:blur(26px) saturate(1.6);border:1px solid rgba(255,255,255,.8);box-shadow:0 14px 44px rgba(40,70,90,.10),inset 0 1px 0 rgba(255,255,255,.8)}
+.lane.crawl{background:linear-gradient(165deg,rgba(240,246,249,.68),rgba(205,230,242,.36))}
+.lane.walk{background:linear-gradient(165deg,rgba(236,244,249,.62),rgba(140,200,228,.40))}
+.lane.run{background:linear-gradient(165deg,rgba(232,242,248,.60),rgba(90,170,212,.40))}
+.lh{position:absolute;left:0;right:0;top:0;height:58px;padding:11px 18px;display:flex;align-items:center;gap:10px}
+.lh .dot{width:12px;height:12px;border-radius:50%}.lane.crawl .dot{background:var(--crawl)}.lane.walk .dot{background:var(--walk)}.lane.run .dot{background:var(--run)}
+.lh b{font-size:21px;font-weight:400;letter-spacing:-.03em;line-height:1.1}.lh span{display:block;font-size:12px;color:var(--ink-2);font-weight:500;margin-top:1px}
+.gl{position:absolute;height:0;border-top:1px solid rgba(20,24,27,.09);pointer-events:none}
+.yl{position:absolute;left:0;width:42px;text-align:right;font-size:12px;font-weight:600;color:var(--ink-3);transform:translateY(-8px)}
+svg.cn{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+.cp{fill:none;stroke:var(--blue);stroke-width:2.2;stroke-linecap:round;filter:drop-shadow(0 0 4px rgba(66,176,213,.7));opacity:.9;transition:stroke-width .15s,opacity .15s}
+.cp.dim{opacity:.16}.cp.hi,.cp.sel{stroke-width:3.4;opacity:1;stroke-dasharray:7 7;animation:flow 1s linear infinite}
+.cp.warn{stroke:#E0A126;filter:drop-shadow(0 0 4px rgba(224,161,38,.7))}.cp.tmp{stroke-dasharray:5 6;opacity:1}
+@keyframes flow{to{stroke-dashoffset:-14}}
+.cph{fill:none;stroke:transparent;stroke-width:16;pointer-events:stroke;cursor:pointer}
+.cb circle{fill:#fff;stroke:var(--blue);stroke-width:1.6}.cb text{font:700 10px var(--font);fill:#17566f;text-anchor:middle}
+.bx{--c:143,208,234;position:absolute;border-radius:14px;padding:6px 10px 5px;cursor:grab;overflow:hidden;user-select:none;touch-action:none;background:linear-gradient(165deg,rgba(255,255,255,.0) 25%,rgba(var(--c),.34)),#fff;border:1px solid #fff;box-shadow:0 3px 12px rgba(20,24,27,.11);transition:opacity .18s,box-shadow .18s}
+.bx.walk{--c:77,182,218}.bx.run{--c:58,160,200}
+.bx:hover,.bx.hl{box-shadow:0 8px 22px rgba(20,24,27,.18),0 0 0 2px var(--blue)}.bx.dim{opacity:.4}.bx.tgt{box-shadow:0 0 0 3px var(--run)}.bx.sel{box-shadow:0 0 0 3px var(--blue),0 8px 22px rgba(20,24,27,.18)}
+.bh{display:flex;align-items:center;gap:7px;margin-bottom:2px;white-space:nowrap;overflow:hidden}
+.bh .id{flex:none;font-size:10.5px;font-weight:800;letter-spacing:.03em;background:var(--black);color:#fff;border-radius:6px;padding:1px 7px}
+.bh .tm{font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#5A6770;overflow:hidden;text-overflow:ellipsis}
+.ti{font-size:13.5px;font-weight:600;line-height:1.18;color:#10161A;letter-spacing:-.1px;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.bx.hm .ti{-webkit-line-clamp:4}.bx.hx .ti{-webkit-line-clamp:4}.bx.nw.hm .ti{-webkit-line-clamp:3}
+.bx.nw .ti{font-size:12.5px;line-height:1.15}.bx.nw .bd{font-size:11px}
+.bd{display:none;font-size:11.5px;font-weight:400;line-height:1.4;color:#44505A;margin-top:5px}
+.bx.hx .bd{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden}
+.dp{display:none;font-size:10.5px;font-weight:700;color:var(--link);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bx.hm .dp,.bx.hx .dp{display:block}
+.bx .hdl{position:absolute;left:0;right:0;height:9px;cursor:ns-resize;z-index:2}.bx .hdl.t{top:0}.bx .hdl.b{bottom:0}
+.bx .hdl::after{content:"";position:absolute;left:50%;width:28px;height:3px;margin-left:-14px;border-radius:2px;background:rgba(20,24,27,.30);opacity:0;transition:opacity .15s}
+.bx .hdl.t::after{top:2px}.bx .hdl.b::after{bottom:2px}.bx:hover .hdl::after{opacity:1}
+body.edits-on .bx.vf::after{content:"";position:absolute;right:8px;top:8px;width:9px;height:9px;border-radius:50%;background:#F2994A;box-shadow:0 0 0 3px rgba(242,153,74,.28)}
+.port{position:absolute;z-index:40;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;border:2px solid var(--blue);box-shadow:0 0 0 3px rgba(66,176,213,.22);cursor:crosshair;opacity:0;transition:opacity .15s,transform .15s}
+.port.vis{opacity:1}.port.in{cursor:default}.port:hover{transform:scale(1.35)}
+.now{position:absolute;height:0;border-top:2px dashed rgba(224,161,38,.95);pointer-events:none;z-index:2}
+.now span{position:absolute;right:10px;top:-22px;font-size:11px;font-weight:700;background:rgba(255,240,200,.95);color:#7a5600;padding:1px 9px;border-radius:999px;white-space:nowrap}
+body.rm-drag{cursor:grabbing;user-select:none}
+.rmhover{position:fixed;z-index:140;width:300px;padding:16px 18px;opacity:0;pointer-events:none;transform:translateY(4px);transition:opacity .15s,transform .15s}
+.rmhover.show{opacity:1;transform:none}
+.rmhover .r{display:flex;gap:8px;align-items:center;margin-bottom:8px}.rmhover .id{font-size:11px;font-weight:800;background:var(--black);color:#fff;border-radius:6px;padding:1px 8px}
+.rmhover h4{font-size:18px;font-weight:500;line-height:1.2;margin-bottom:6px}.rmhover .tm{font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.rmhover p{margin:0 0 8px;font-size:13.5px;color:var(--ink-2);line-height:1.45}.rmhover small{color:var(--ink-3);font-size:12px}
+.rmhelp{position:fixed;z-index:141;width:330px;padding:16px 18px;opacity:0;pointer-events:none;transform:translateY(6px);transition:.18s}.rmhelp.show{opacity:1;pointer-events:auto;transform:none}
+.rmhelp h4{font-size:16px;margin-bottom:8px}.rmhelp ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2)}.rmhelp li{margin:5px 0}
+.detail{position:fixed;top:14px;right:14px;bottom:14px;width:min(440px,94vw);z-index:130;transform:translateX(calc(100% + 30px));transition:transform .4s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow:hidden}
+.detail.show{transform:none}
+.dt-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.dt-b{overflow:auto;padding:16px 20px 28px}
+.ds{display:none}.ds.on{display:block}
+.idb{display:inline-block;font-weight:800;font-size:12px;background:var(--black);color:#fff;border-radius:7px;padding:2px 10px;margin-bottom:8px}
+.ds h3{font-size:26px;font-weight:400;letter-spacing:-.03em;margin-bottom:10px;line-height:1.15}
+.ds .inc{font-size:13px;color:var(--ink-3);margin:0 0 8px}
+.drow{margin:14px 0;font-size:15px;color:var(--ink-2);line-height:1.5}
+.drow b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--link);margin-bottom:3px;font-weight:700}
+.dpills{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.dpills button{border:0;cursor:pointer;font:600 12.5px var(--font);padding:4px 11px;border-radius:999px;background:var(--blue-3);color:#17566f}.dpills button.o{background:#fff}
+.badge-red{display:inline-block;background:var(--red);color:#fff;border-radius:999px;font-size:12px;font-weight:700;padding:2px 10px;margin-left:6px;vertical-align:middle}
+.depedit{position:fixed;z-index:135;width:min(360px,92vw);padding:16px;opacity:0;pointer-events:none;transform:translateY(8px);transition:.2s}.depedit.show{opacity:1;pointer-events:auto;transform:none}
+.depedit label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);margin:10px 0 4px}
+.depedit select,.depedit input{width:100%;padding:9px 12px;border-radius:12px;border:1px solid rgba(20,24,27,.10);background:rgba(255,255,255,.9);font:500 14px var(--font);color:var(--ink)}
+.de-h{display:flex;justify-content:space-between;align-items:center}.de-w{font-size:13px;color:#7a5600;margin-top:8px}.de-w div{margin:3px 0}.de-f{display:flex;justify-content:space-between;margin-top:14px;gap:8px}
+.rat3{display:grid;grid-template-columns:repeat(3,1fr);align-items:start;padding-top:16px}
+.rat{position:relative;padding:26px 26px 22px;margin-left:-16px}.rat:first-child{margin-left:0;margin-top:14px}.rat.walk{margin-top:-8px;z-index:2}.rat.run{margin-top:26px}
+.rat::before{content:"";position:absolute;left:26px;top:-1px;width:44px;height:4px;border-radius:0 0 4px 4px;background:var(--crawl)}.rat.walk::before{background:var(--walk)}.rat.run::before{background:var(--run)}
+.src2{display:grid;grid-template-columns:1.15fr 1fr;align-items:start}.srcA{padding:22px 28px 14px}.srcA h3,.sbox h3{font-size:19px;font-weight:400;margin:0 0 6px}.srcB{margin-left:-30px;margin-top:38px;display:flex;flex-direction:column;gap:16px;position:relative;z-index:2}.sbox{padding:20px 26px 14px}.sbox.warn{border-left:4px solid var(--amber)}
+.rat h3{font-size:19px;margin-bottom:8px}.rat p{margin:0;color:var(--ink-2);font-size:15px}
+@media (max-width:900px){.src2{grid-template-columns:1fr}.srcB{margin:14px 0 0}.rat{margin:14px 0 0!important}.rat3{grid-template-columns:1fr}.rm-screen{height:auto;padding-left:16px}.rm-board{height:760px;flex:none}}
+
+/* ---- Ex10 theme layer: flat soft surfaces, one accent, quiet keys ---- */
+.ck{background:rgba(224,228,232,.6);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:0;font-weight:400;border-radius:10px;color:var(--ink-2)}.ck.warn{background:#F6E7BE;color:#6d4d00}
+.lane{background:rgba(255,255,255,.46)!important;-webkit-backdrop-filter:blur(16px)!important;backdrop-filter:blur(16px)!important;border:1px solid rgba(255,255,255,.55)!important;box-shadow:0 14px 40px rgba(16,40,60,.07)!important;border-radius:28px}
+.lane.walk{background:rgba(222,238,247,.5)!important}.lane.run{background:rgba(202,228,243,.52)!important}
+.lh b{font-weight:300;font-size:24px;letter-spacing:-.025em}.lh span{font-weight:400}.lh .dot{width:10px;height:10px;border-radius:4px}
+.gl{border-top-color:rgba(16,19,22,.06)}.yl{font-weight:400}
+.cp{filter:none;stroke-width:1.8;opacity:.8}.cp.hi,.cp.sel{filter:none;stroke-width:2.6}.cp.warn{filter:none}
+.cb circle{stroke-width:1.4}.cb text{font-weight:500}
+.bx{background:rgba(255,255,255,.8)!important;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:0!important;border-radius:16px;box-shadow:0 1px 2px rgba(16,19,22,.07)!important;padding-left:15px}
+.bx::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:4px;border-radius:0 4px 4px 0;background:rgb(var(--c))}
+.bx.crawl{--c:150,205,228}.bx.walk{--c:77,182,218}.bx.run{--c:34,138,188}
+.bx:hover,.bx.hl{box-shadow:0 8px 22px rgba(16,19,22,.10),0 0 0 2px var(--blue)!important}.bx.sel{box-shadow:0 0 0 2px var(--blue),0 8px 22px rgba(16,19,22,.10)!important}.bx.tgt{box-shadow:0 0 0 3px var(--run)!important}
+.bh .id{border-radius:7px;font-weight:500;background:var(--ink)}.bh .tm{font-weight:400;letter-spacing:.03em}
+.ti{font-weight:500;letter-spacing:-.005em}.dp{font-weight:500}.bd{font-weight:400}
+.port{box-shadow:none;border:2px solid var(--ink)}
+.rmhover,.rmhelp,.detail,.depedit{background:rgba(244,245,247,.78)!important;-webkit-backdrop-filter:blur(22px) saturate(1.1)!important;backdrop-filter:blur(22px) saturate(1.1)!important;box-shadow:0 18px 50px rgba(16,19,22,.16)!important}
+.idb{border-radius:8px;font-weight:500}.ds h3{font-weight:300}.drow b{font-weight:500}
+.dpills button{border-radius:10px;font-weight:400}.depedit select,.depedit input{border-radius:12px;background:#fff;border:0}
+.rat{border-top:0!important}.rat h3{font-weight:400}
+.badge-red{border-radius:8px}
+
+/* translucent, blurred boxes */
+.bx{background:rgba(255,255,255,.74)!important}
+
+</style>
+</head>
+<body class="pg-roadmap">
+<script>(function(){try{var p=location.pathname.split('/').pop()||'index.html',d=(p==='roadmap.html'||p==='dashboard.html'),a=localStorage.getItem('g1-nav-'+p);a=a===null?d:JSON.parse(a);if(!a&&innerWidth>=900)document.body.classList.add('nav-pinned')}catch(e){}})();</script>
+<div class="bg" id="bg" data-def=""><i class="bl b1"></i><i class="bl b2"></i><i class="bl b3"></i><svg class="arcs" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#10161B" stroke-width="1" stroke-dasharray="3 7" opacity=".16"><circle cx="720" cy="980" r="360"/><circle cx="720" cy="980" r="560"/><circle cx="720" cy="980" r="760"/><path d="M720 0V900"/></g></svg></div><div class="bgveil" id="bgveil" data-va="0"></div>
+<script>
+/* fallback page change (only used when the browser cannot do native page transitions) */
+(function(){try{var t=JSON.parse(sessionStorage.getItem('g1t')||'null');sessionStorage.removeItem('g1t');
+ if(t&&Date.now()-t.ts<9000)document.documentElement.classList.add('enter-'+t.dir)}catch(e){}})();
+</script>
+<div class="nav-hot" id="navHot" aria-hidden="true"></div>
+<button class="gn-handle" id="gnHandle" type="button" aria-label="Open navigation"></button>
+<aside class="gnav" id="gnav" aria-label="Site navigation">
+  <a class="gn-logo" href="index.html" aria-label="Home"><i></i></a>
+  <div class="gn-grp"><nav class="gn-links"><a class="gn-ico" href="index.html" data-tip="About us" aria-label="About us"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></a><a class="gn-ico on" href="roadmap.html" data-tip="Roadmap" aria-label="Roadmap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19c3-9 6-3 8-8s4-5 8-6"/><circle cx="4" cy="19" r="1.7"/><circle cx="12" cy="11" r="1.7"/><circle cx="20" cy="5" r="1.7"/></svg></a><a class="gn-ico" href="raci.html" data-tip="RACI" aria-label="RACI"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 4v16"/></svg></a><a class="gn-ico" href="dashboard.html" data-tip="Dashboard" aria-label="Dashboard"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg></a></nav></div><div class="gn-spacer"></div>
+  <div class="gn-grp"><div class="acct" id="acct"><button class="gn-av" type="button" aria-label="Choose a team member" aria-haspopup="true"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRENFRkY4Ii8+PHBhdGggZD0iTTI5IDQ3Yy0zLTIxIDYtMzIgMTktMzJzMjIgMTEgMTkgMzJjLTEgOC0zIDEyLTUgMTRIMzRjLTItMi00LTYtNS0xNHoiIGZpbGw9IiMxRjFCMUEiLz48cGF0aCBkPSJNNiAxMDBjMC0yMiAxOS0zMiA0Mi0zMnM0MiAxMCA0MiAzMnoiIGZpbGw9IiM3Q0M4RTYiLz48cmVjdCB4PSI0MSIgeT0iNTUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgcng9IjYiIGZpbGw9IiNFOEI3OTEiLz48ZWxsaXBzZSBjeD0iNDgiIGN5PSI0MyIgcng9IjE2IiByeT0iMTgiIGZpbGw9IiNFOEI3OTEiLz48cGF0aCBkPSJNMzEgMzdjMy05IDEwLTE0IDE3LTE0czE0IDUgMTcgMTRjLTgtMy0xNC02LTE3LTZzLTkgMy0xNyA2eiIgZmlsbD0iIzFGMUIxQSIvPjxjaXJjbGUgY3g9IjQyLjUiIGN5PSI0NSIgcj0iMS44IiBmaWxsPSIjMmEyYTJhIi8+PGNpcmNsZSBjeD0iNTMuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48cGF0aCBkPSJNNDMgNTIuNXE1IDQgMTAgMCIgc3Ryb2tlPSIjN2E0YTNhIiBzdHJva2Utd2lkdGg9IjEuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvc3ZnPg==" alt="Marie Vo"></button>
+    <div class="acct-pop" role="menu"><div class="acct-h">Open a team member&rsquo;s page</div><a class="acct-tile cur" href="roadmap.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRENFRkY4Ii8+PHBhdGggZD0iTTI5IDQ3Yy0zLTIxIDYtMzIgMTktMzJzMjIgMTEgMTkgMzJjLTEgOC0zIDEyLTUgMTRIMzRjLTItMi00LTYtNS0xNHoiIGZpbGw9IiMxRjFCMUEiLz48cGF0aCBkPSJNNiAxMDBjMC0yMiAxOS0zMiA0Mi0zMnM0MiAxMCA0MiAzMnoiIGZpbGw9IiM3Q0M4RTYiLz48cmVjdCB4PSI0MSIgeT0iNTUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgcng9IjYiIGZpbGw9IiNFOEI3OTEiLz48ZWxsaXBzZSBjeD0iNDgiIGN5PSI0MyIgcng9IjE2IiByeT0iMTgiIGZpbGw9IiNFOEI3OTEiLz48cGF0aCBkPSJNMzEgMzdjMy05IDEwLTE0IDE3LTE0czE0IDUgMTcgMTRjLTgtMy0xNC02LTE3LTZzLTkgMy0xNyA2eiIgZmlsbD0iIzFGMUIxQSIvPjxjaXJjbGUgY3g9IjQyLjUiIGN5PSI0NSIgcj0iMS44IiBmaWxsPSIjMmEyYTJhIi8+PGNpcmNsZSBjeD0iNTMuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48cGF0aCBkPSJNNDMgNTIuNXE1IDQgMTAgMCIgc3Ryb2tlPSIjN2E0YTNhIiBzdHJva2Utd2lkdGg9IjEuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvc3ZnPg==" alt=""><b>Marie Vo</b><small>Roadmap Sequencer</small></a><a class="acct-tile" href="raci.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRTNGM0ZBIi8+PGNpcmNsZSBjeD0iNDgiIGN5PSIxNiIgcj0iOC41IiBmaWxsPSIjMkIyMjIwIi8+PHBhdGggZD0iTTYgMTAwYzAtMjIgMTktMzIgNDItMzJzNDIgMTAgNDIgMzJ6IiBmaWxsPSIjMkU5Q0M2Ii8+PHJlY3QgeD0iNDEiIHk9IjU1IiB3aWR0aD0iMTQiIGhlaWdodD0iMTciIHJ4PSI2IiBmaWxsPSIjRjBDM0EwIi8+PGVsbGlwc2UgY3g9IjQ4IiBjeT0iNDMiIHJ4PSIxNiIgcnk9IjE4IiBmaWxsPSIjRjBDM0EwIi8+PHBhdGggZD0iTTMxIDQxYzAtMTQgOC0yMSAxNy0yMXMxNyA3IDE3IDIxYy01LTYtMTEtOS0xNy05cy0xMiAzLTE3IDl6IiBmaWxsPSIjMkIyMjIwIi8+PGNpcmNsZSBjeD0iNDIuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48Y2lyY2xlIGN4PSI1My41IiBjeT0iNDUiIHI9IjEuOCIgZmlsbD0iIzJhMmEyYSIvPjxwYXRoIGQ9Ik00MyA1Mi41cTUgNCAxMCAwIiBzdHJva2U9IiM3YTRhM2EiIHN0cm9rZS13aWR0aD0iMS44IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+" alt=""><b>Ai Ky Chung</b><small>Governance Designer</small></a><a class="acct-tile" href="dashboard.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjQ0RFQUY2Ii8+PHBhdGggZD0iTTI3IDQ2Yy0zLTIyIDgtMzIgMjEtMzJzMjQgMTAgMjEgMzJjMCAxNCAyIDIyIDcgMjhIMjBjNS02IDctMTQgNy0yOHoiIGZpbGw9IiMzQjJBMjIiLz48cGF0aCBkPSJNNiAxMDBjMC0yMiAxOS0zMiA0Mi0zMnM0MiAxMCA0MiAzMnoiIGZpbGw9IiM0MkIwRDUiLz48cmVjdCB4PSI0MSIgeT0iNTUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgcng9IjYiIGZpbGw9IiNGMUM2QTQiLz48ZWxsaXBzZSBjeD0iNDgiIGN5PSI0MyIgcng9IjE2IiByeT0iMTgiIGZpbGw9IiNGMUM2QTQiLz48cGF0aCBkPSJNMzEgMzljMi0xMiAxMC0xOCAxOC0xOHMxNSA2IDE3IDE4Yy02LTYtMTItOS0xOC05cy0xMiAzLTE3IDl6IiBmaWxsPSIjM0IyQTIyIi8+PGNpcmNsZSBjeD0iNDIuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48Y2lyY2xlIGN4PSI1My41IiBjeT0iNDUiIHI9IjEuOCIgZmlsbD0iIzJhMmEyYSIvPjxwYXRoIGQ9Ik00MyA1Mi41cTUgNCAxMCAwIiBzdHJva2U9IiM3YTRhM2EiIHN0cm9rZS13aWR0aD0iMS44IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+" alt=""><b>Linh Tran</b><small>Dashboard Designer</small></a><a class="acct-tile" href="dashboard.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRDNFQkY2Ii8+PHBhdGggZD0iTTYgMTAwYzAtMjIgMTktMzIgNDItMzJzNDIgMTAgNDIgMzJ6IiBmaWxsPSIjNURCOURDIi8+PHJlY3QgeD0iNDEiIHk9IjU1IiB3aWR0aD0iMTQiIGhlaWdodD0iMTciIHJ4PSI2IiBmaWxsPSIjRTNCMjhBIi8+PGVsbGlwc2UgY3g9IjQ4IiBjeT0iNDMiIHJ4PSIxNiIgcnk9IjE4IiBmaWxsPSIjRTNCMjhBIi8+PHBhdGggZD0iTTMxIDQxYy0xLTE1IDctMjMgMTctMjNzMTggOCAxNyAyM2MtMy01LTYtOC05LTktNiAzLTE0IDMtMjAgMC0zIDEtNCA0LTUgOXoiIGZpbGw9IiMxRTFBMTkiLz48Y2lyY2xlIGN4PSI0Mi41IiBjeT0iNDUiIHI9IjEuOCIgZmlsbD0iIzJhMmEyYSIvPjxjaXJjbGUgY3g9IjUzLjUiIGN5PSI0NSIgcj0iMS44IiBmaWxsPSIjMmEyYTJhIi8+PHBhdGggZD0iTTQzIDUyLjVxNSA0IDEwIDAiIHN0cm9rZT0iIzdhNGEzYSIgc3Ryb2tlLXdpZHRoPSIxLjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4=" alt=""><b>Nguyen Le</b><small>Site Editor</small></a></div></div>
+    <button class="gn-ico" id="bgBtn" type="button" data-tip="Page background photo" aria-label="Page background photo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.7"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg></button>
+    <button class="gn-ico" id="navMode" type="button" data-tip="Auto-hide" aria-label="Toggle auto-hide navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 3 3H7l3-3-1-6z"/><path d="M12 12v9"/></svg></button>
+    <button class="gn-ico" id="rvToggle" type="button" data-tip="Highlight our edits" aria-label="Highlight our edits"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <button class="gn-ico" id="rvList" type="button" data-tip="Edits on this page" aria-label="Edits on this page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg><em id="rvCount">0</em></button></div>
+</aside>
+<main class="stage" id="stage">
+<section class="rm-screen" id="roadmap">
+  <div class="rm-top">
+    <header class="mh gz"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19c3-9 6-3 8-8s4-5 8-6"/><circle cx="4" cy="19" r="1.7"/><circle cx="12" cy="11" r="1.7"/><circle cx="20" cy="5" r="1.7"/></svg></span><div><h1>Transformation roadmap</h1><small id="rmSub">Deliverable 1</small></div></header>
+  </div>
+  <div class="rm-top"><div class="rm-bar" id="rmChecks"></div><div class="rm-act"><button class="btn sm" id="rmHelpBtn" type="button">How to edit</button><button class="btn sm" id="rmCopy" type="button" title="Copy your edited timeline so it can be saved into the site files">Copy data</button><button class="btn sm" id="rmReset" type="button">Reset</button></div></div>
+  <div class="rm-board"><div class="tl" id="tl"></div></div>
+</section>
+<section class="sec" id="dependencies"><div class="sec-h"><h2>X &rarr; Y: enables&hellip;</h2><p>Every arrow on the board, with the capability it enables. Edit one here or on the board.</p></div><div class="tbl gz"><table class="t"><thead><tr><th>#</th><th>From (enabling)</th><th>To (enabled)</th><th>Annotation</th><th></th></tr></thead><tbody id="depRows"></tbody></table></div></section>
+<section class="sec" id="rationale"><div class="sec-h"><h2>Why each phase must come first</h2></div><div class="rat3"><div class="rat gz"><h3>Crawl</h3><p class="fix fix-block " data-kind="edit" data-note="Your Crawl paragraph was 101 words; the limit is 100. Tightened to 90 and added the sentence that says why Walk cannot start first (6.34 asks for exactly that)." data-wc='75-100'>Maersk could not digitize customer experiences or run predictive models on data that did not yet exist in usable form. In 2017 the company still ran largely on paper, with up to 30 parties exchanging up to 200 communications per container (Dagar et al., 2024). Appointing a dedicated CIO (Logan, 2021), digitizing and standardizing shipping documents (Vlacic, 2022) and resolving the five key challenges of connecting supply-chain data (Rios, 2021) built the structured foundation that every later tool must read, trust and act on, so Walk cannot start before it.</p></div><div class="rat walk gz"><h3>Walk</h3><p class="fix fix-block " data-kind="edit" data-note="Edited the closing sentence so it says why Run must follow Walk, and aligned the initiative names with the roadmap (94 → 83 words, inside 75–100)." data-wc='75-100'>Once data was digitized and standardized, Maersk could show it to customers and employees without manual translation between formats. Real-time ordering, invoicing and tracking became possible only because documents were already digital and consistent across parties. Port automation at Rotterdam (Petersen, 2015), Maersk Flow (Maersk, 2021) and Captain Peter (Maersk, 2019) turn Crawl data into usable experiences, but none yet produced the long sensor and behavioral histories that predictive and ecosystem systems need. That is why Run must follow Walk, not precede it.</p></div><div class="rat run gz"><h3>Run</h3><p class="fix fix-block " data-kind="edit" data-note="Added predictive maintenance and digital twins (now initiative R2), fixed the typo &#x27;IMB&#x27; → IBM and the TradeLens citation (86 → 86 words, inside 75–100)." data-wc='75-100'>AI prediction and ecosystem platforms need a running history of real operational data. The Logistics Hub’s arrival predictions (Maersk, 2026) train on GPS and voyage data that exists only because Walk-phase tracking was already running; predictive maintenance and digital twins likewise need sensor histories. TradeLens (IBM, 2018) assumed the data standards built in Crawl would be adopted industry-wide, a dependency never fully met and a key reason it was discontinued in 2022 (TradeLens, 2022). It shows what happens when Run launches before its prerequisite exists ecosystem-wide.</p></div></div></section>
+<section class="sec" id="inventory"><div class="sec-h"><h2>Inventory: 16 initiatives</h2><p>Your full list with the source for each line (the source log) and what became of it. Sixteen is more than the 6&ndash;8 the brief asks us to sequence, so eight are sequenced and four of them absorb the others.</p></div><div class="tbl gz"><table class="t"><thead><tr><th>#</th><th>Phase</th><th>Initiative</th><th>What it delivered</th><th>Source (source log)</th><th>In the roadmap</th></tr></thead><tbody><tr><td class="mono">1</td><td>Crawl</td><td><b>Appoint dedicated CIO/CTO from within the business</b></td><td>Internal technical leadership with business credibility for the 2017 transformation.</td><td><span class="fix" data-kind="verify" data-note="Logan (2021) covers a CTO joining the Executive Board; the 2017 CIO appointment is documented in The Loadstar (10 Sep 2018). Check which one you mean." title="Logan (2021) covers a CTO joining the Executive Board; the 2017 CIO appointment is documented in The Loadstar (10 Sep 2018). Check which one you mean.">Logan (2021)</span></td><td><span class="fate">→ C1</span></td></tr><tr><td class="mono">2</td><td>Crawl</td><td><b>Digitize paper-based shipping documents</b></td><td>Up to 30 parties and 200 communications per container, previously on paper.</td><td>Dagar et al. (2024); Vlacic (2022)</td><td><span class="fix" data-kind="edit" data-note="Merged into C2 so the roadmap has 6–8 initiatives." title="Merged into C2 so the roadmap has 6–8 initiatives."><span class="fate">→ C2</span></span></td></tr><tr><td class="mono">3</td><td>Crawl</td><td><b>Resolve core data-integration challenges</b></td><td>Fixed the “5 key challenges” to connecting supply-chain data before building on it.</td><td>Rios (2021)</td><td><span class="fix" data-kind="edit" data-note="Merged into C2 so the roadmap has 6–8 initiatives." title="Merged into C2 so the roadmap has 6–8 initiatives."><span class="fate">→ C2</span></span></td></tr><tr><td class="mono">4</td><td>Crawl</td><td><b>Standardize document formats and terminology</b></td><td>Fixed inconsistent formats and definitions that varied by administration and port.</td><td><span class="fix" data-kind="edit" data-note="Your document spells this &#x27;Vlaic&#x27; in one place and &#x27;Vlacic&#x27; in another. Normalized to Vlacic." title="Your document spells this &#x27;Vlaic&#x27; in one place and &#x27;Vlacic&#x27; in another. Normalized to Vlacic.">Vlacic (2022)</span></td><td><span class="fix" data-kind="edit" data-note="Merged into C2 so the roadmap has 6–8 initiatives." title="Merged into C2 so the roadmap has 6–8 initiatives."><span class="fate">→ C2</span></span></td></tr><tr><td class="mono">5</td><td>Crawl</td><td><b>Industry data-standards groundwork</b></td><td>Attempted shared, interoperable data standards across the shipping ecosystem.</td><td><span class="fix" data-kind="verify" data-note="TradeLens (2020) is cited but missing from your reference list." title="TradeLens (2020) is cited but missing from your reference list.">TradeLens (2020)</span></td><td><span class="fix" data-kind="edit" data-note="Merged into C2 so the roadmap has 6–8 initiatives." title="Merged into C2 so the roadmap has 6–8 initiatives."><span class="fate">→ C2</span></span></td></tr><tr><td class="mono">6</td><td>Walk</td><td><b>Real-time digital ordering, invoicing, tracking</b></td><td>Converted digitized data into live customer-facing status visibility.</td><td><span class="fix" data-kind="verify" data-note="Dagar et al. (2024) is cited four times but missing from your reference list." title="Dagar et al. (2024) is cited four times but missing from your reference list.">Dagar et al. (2024)</span></td><td><span class="fate">→ W1</span></td></tr><tr><td class="mono">7</td><td>Walk</td><td><b>Maersk Flow</b></td><td>One-stop digital supply-chain and fulfillment tool, origin to final delivery.</td><td>Maersk (2021); Maersk (2020)</td><td><span class="fix" data-kind="edit" data-note="Merged into W2 so the roadmap has 6–8 initiatives." title="Merged into W2 so the roadmap has 6–8 initiatives."><span class="fate">→ W2</span></span></td></tr><tr><td class="mono">8</td><td>Walk</td><td><b>Captain Peter</b></td><td>Reefer cargo monitoring with customizable service and pricing.</td><td>Maersk (2019)</td><td><span class="fix" data-kind="edit" data-note="Merged into W2 so the roadmap has 6–8 initiatives." title="Merged into W2 so the roadmap has 6–8 initiatives."><span class="fate">→ W2</span></span></td></tr><tr><td class="mono">9</td><td>Walk</td><td><b>Automated container terminal + RFID/AGVs</b></td><td>First fully automated terminal; robotic picking, GPS/telematics tracking.</td><td>Petersen (2015); Dujak & Sajter (2019)</td><td><span class="fate">→ W3</span></td></tr><tr><td class="mono">10</td><td>Walk</td><td><b>TradeLens launch (customer-visible layer)</b></td><td>Cut trucker terminal entry/exit time from 105 to 35 minutes.</td><td>Maersk (2020)</td><td><span class="fix" data-kind="edit" data-note="Merged into R3 so the roadmap has 6–8 initiatives." title="Merged into R3 so the roadmap has 6–8 initiatives."><span class="fate">→ R3</span></span></td></tr><tr><td class="mono">11</td><td>Run</td><td><b>Logistics Hub (AI arrival prediction)</b></td><td>Machine learning on historical voyages and GPS data to predict vessel arrival times.</td><td>Maersk (2026); Lindhardt (2023)</td><td><span class="fate">→ R1</span></td></tr><tr><td class="mono">12</td><td>Run</td><td><b>Autonomous vessel situational-awareness AI</b></td><td>Partnership with Sea Machines Robotics for at-sea object detection and tracking.</td><td><span class="fix" data-kind="edit" data-note="Your document wrote &#x27;Sea Machine Robots&#x27;; the company is Sea Machines Robotics. Also check Dotzer (2021): it covers Maersk Tankers, not this trial." title="Your document wrote &#x27;Sea Machine Robots&#x27;; the company is Sea Machines Robotics. Also check Dotzer (2021): it covers Maersk Tankers, not this trial.">Gondelles (2018); Dotzer (2021)</span></td><td><span class="fix" data-kind="edit" data-note="Dropped from the 8 sequenced initiatives so the roadmap stays within 6–8. Your own document marks it as a trial or exploratory and gives it no dependency key. It stays in the inventory so nothing is lost." title="Dropped from the 8 sequenced initiatives so the roadmap stays within 6–8. Your own document marks it as a trial or exploratory and gives it no dependency key. It stays in the inventory so nothing is lost."><span class="fate no">not sequenced</span></span></td></tr><tr><td class="mono">13</td><td>Run</td><td><b>Predictive maintenance (ship engine sensors)</b></td><td>Sensors alert before failure instead of reactive repair.</td><td><span class="fix" data-kind="verify" data-note="SOURCE MISSING. The source log (6.34, Member D) needs one source per initiative and your document gives none for this item." title="SOURCE MISSING. The source log (6.34, Member D) needs one source per initiative and your document gives none for this item.">— no source given</span></td><td><span class="fix" data-kind="edit" data-note="Merged into R2 so the roadmap has 6–8 initiatives." title="Merged into R2 so the roadmap has 6–8 initiatives."><span class="fate">→ R2</span></span></td></tr><tr><td class="mono">14</td><td>Run</td><td><b>Digital twin simulation</b></td><td>Models vessel performance and route options to optimize and cut emissions.</td><td><span class="fix" data-kind="verify" data-note="Dotzer (2021) is about Maersk Tankers, a separate company since Oct 2017. Check that it belongs in this case." title="Dotzer (2021) is about Maersk Tankers, a separate company since Oct 2017. Check that it belongs in this case.">Dotzer (2021)</span></td><td><span class="fix" data-kind="edit" data-note="Merged into R2 so the roadmap has 6–8 initiatives." title="Merged into R2 so the roadmap has 6–8 initiatives."><span class="fate">→ R2</span></span></td></tr><tr><td class="mono">15</td><td>Run</td><td><b>VR safety training</b></td><td>Exploratory use for combined physical and cognitive training scenarios.</td><td>Virsabi (2022)</td><td><span class="fix" data-kind="edit" data-note="Dropped from the 8 sequenced initiatives so the roadmap stays within 6–8. Your own document marks it as a trial or exploratory and gives it no dependency key. It stays in the inventory so nothing is lost." title="Dropped from the 8 sequenced initiatives so the roadmap stays within 6–8. Your own document marks it as a trial or exploratory and gives it no dependency key. It stays in the inventory so nothing is lost."><span class="fate no">not sequenced</span></span></td></tr><tr><td class="mono">16</td><td>Run</td><td><b>TradeLens as ecosystem / platform play</b></td><td>Open blockchain platform for any shipping-ecosystem player; discontinued 2022.</td><td><span class="fix" data-kind="edit" data-note="Your document wrote &#x27;IMB (2018)&#x27; in the Run rationale; corrected to IBM. TradeLens (2023) is cited but missing from your reference list." title="Your document wrote &#x27;IMB (2018)&#x27; in the Run rationale; corrected to IBM. TradeLens (2023) is cited but missing from your reference list.">IBM (2018); TradeLens (2023)</span></td><td><span class="fix" data-kind="edit" data-note="Merged into R3 so the roadmap has 6–8 initiatives." title="Merged into R3 so the roadmap has 6–8 initiatives."><span class="fate">→ R3</span></span></td></tr></tbody></table></div></section>
+<section class="sec" id="sources"><div class="sec-h"><h2>References and gaps</h2></div><div class="src2"><div class="srcA gz"><h3>References</h3><ul class="refs"><li>Dotzer, E. (2021). Maersk Tankers uses vessels’ “digital twin” to slash emissions.</li><li>Dujak, D., & Sajter, D. (2019). Blockchain applications in supply chain. In SMART supply network (pp. 21–46).</li><li>Gondelles, L. (2018). Maersk to trial situational awareness system powered by artificial intelligence aboard a containership. Veconinter.</li><li>IBM. (2018). Maersk and IBM introduce TradeLens blockchain shipping solution.</li><li>Lindhardt, K. (2023). Maersk aims to handle all cargo by means of artificial intelligence. Shipping Watch.</li><li>Logan, D. (2021). Maersk appoints chief technology officer as new member of Executive Board. Shipping Watch.</li><li>Maersk. (2019). Captain Peter™.</li><li>Maersk. (2020). Message from the Chairman and the CEO.</li><li>Maersk. (2020). Supply Chain Logistics (Maersk Flow).</li><li>Maersk. (2021). Delivering a Difference: Building a One-Stop E-Commerce Set-Up in Asia.</li><li>Maersk. (2026). Digital Solutions (Logistics Hub).</li><li>Petersen, R. (2015). Why is the Port of Rotterdam more automated than the Port of Oakland?</li><li>Rios, A. (2021). Understanding the 5 key challenges to connect supply chain data.</li><li>Virsabi. (2022). What’s happening with virtual and augmented reality in 2022.</li><li>Vlacic, P. (2022). Electronic trade documentation vs paper documentation – the legal angle.</li><li><span class="fix" data-kind="verify" data-note="Dagar et al. (2024) — cited four times in your roadmap but missing from your reference list. Add the full reference." title="Dagar et al. (2024) — cited four times in your roadmap but missing from your reference list. Add the full reference.">Dagar et al. (2024) — cited four times in your roadmap but missing from your reference list. Add the full reference.</span></li><li><span class="fix" data-kind="verify" data-note="TradeLens (2020), TradeLens (2022) and TradeLens (2023) — cited in the roadmap but missing from your reference list. Add them, or point to Maersk’s announcement of 29 Nov 2022." title="TradeLens (2020), TradeLens (2022) and TradeLens (2023) — cited in the roadmap but missing from your reference list. Add them, or point to Maersk’s announcement of 29 Nov 2022.">TradeLens (2020), TradeLens (2022) and TradeLens (2023) — cited in the roadmap but missing from your reference list. Add them, or point to Maersk’s announcement of 29 Nov 2022.</span></li></ul></div><div class="srcB"><div class="fix fix-block gz sbox" data-kind="add" data-note="Extra sources we found while checking dates. They are suggestions: read each one and only cite it if it supports your claim." ><h3>Suggested additions</h3><ul class="refs"><li>A.P. Moller – Maersk. (2022, 29 Nov). A.P. Moller – Maersk and IBM to discontinue TradeLens, a blockchain-enabled global trade platform. maersk.com/news — supports the discontinuation date in R3.</li><li>A.P. Moller – Maersk. (2020, 28 Jul). A.P. Moller – Maersk launches Maersk Flow, a digital supply chain management platform. maersk.com/news — supports the Maersk Flow launch date and SME focus in W2.</li><li>The Loadstar. (2018, 10 Sep). Adam Banks to take over as chief digital officer at Maersk — supports the CIO timing in C1.</li><li>Maritime Executive. (2015, 25 Apr). APM opens most advanced container terminal — supports the 2015 date of the Rotterdam terminal in W3.</li><li>FreightWaves. (2019). IoT is changing reefer technology quickly — source for the 70%-of-reefer-customers figure in W2.</li></ul></div><div class="fix fix-block gz sbox warn" data-kind="add" data-note="The rubric (Source Quality, 5%) rewards naming gaps instead of filling them. We listed the gaps we found. Keep, edit or delete." ><h3>Gaps in the public record</h3><ul class="refs"><li>Several quarter ranges are estimates because your sources give years, not quarters. Each is flagged on its box.</li><li>The Logistics Hub launch date and the predictive-maintenance source could not be found.</li><li>The TradeLens figure of 105 → 35 minutes is Maersk’s own claim (Maersk, 2020); we found no independent check.</li><li>Maersk Tankers (Dotzer, 2021) is outside the A.P. Moller–Maersk case since Oct 2017.</li></ul></div></div></div></section>
+<div class="page-end"></div>
+</main>
+<aside class="detail glass is-modal" id="detail" aria-label="Initiative details"><div class="dt-h"><span class="eyebrow">Initiative</span><button class="btn sm" id="dtClose" type="button">Close</button></div><div class="dt-b" id="dtB"><div class="ds" data-id="C1"><span class="idb">C1</span><h3>Appoint a dedicated CIO/CTO from within the business</h3><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>Internal technical leadership with business credibility for the 2017 transformation.</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="Quarter range was missing (6.36 asks for one). Sources disagree: Crunchbase lists Adam Banks as CIO from Jan 2017, while The Loadstar (10 Sep 2018) says he took over &#x27;last January&#x27;. Your cited source, Logan (2021), covers a later CTO appointment to the Executive Board. Confirm which appointment you mean and the quarter." title="Quarter range was missing (6.36 asks for one). Sources disagree: Crunchbase lists Adam Banks as CIO from Jan 2017, while The Loadstar (10 Sep 2018) says he took over &#x27;last January&#x27;. Your cited source, Logan (2021), covers a later CTO appointment to the Executive Board. Confirm which appointment you mean and the quarter.">2017</span> <span data-time></span></div><div class="drow"><b>Capability Walk depends on</b><span class="fix" data-kind="add" data-note="6.36 asks Crawl cards to state the capability Walk depends on. We derived this from your dependency key 3." title="6.36 asks Crawl cards to state the capability Walk depends on. We derived this from your dependency key 3.">One technology owner with decision rights over platforms, standards and funding for automation systems.</span></div><div class="drow"><b>If removed</b><span class="fix" data-kind="add" data-note="Added the &#x27;removal test&#x27; from 6.41 (if you removed a Crawl initiative, which Walk initiative becomes impossible?)." title="Added the &#x27;removal test&#x27; from 6.41 (if you removed a Crawl initiative, which Walk initiative becomes impossible?).">W3 (automated terminal + RFID/AGVs) loses its technology owner and funding path.</span></div><div class="drow"><b>Sources</b>Logan (2021) (+ The Loadstar, 2018, suggested)</div></div><div class="ds" data-id="C2"><span class="idb">C2</span><h3>Digitize and standardize shipping documents and data</h3><p class="inc"><span class="fix" data-kind="edit" data-note="Merged four of your Crawl items into one initiative so the roadmap has 6–8 initiatives (you listed 16). Each original item is traceable in the inventory table below." title="Merged four of your Crawl items into one initiative so the roadmap has 6–8 initiatives (you listed 16). Each original item is traceable in the inventory table below.">Includes 4 inventory items: digitize paper shipping documents · standardize formats and terminology · resolve core data-integration challenges · industry data-standards groundwork</span></p><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>In 2017 up to 30 parties still exchanged up to 200 communications per container on paper (Dagar et al., 2024). Digital documents, common formats and integrated data replace that.</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="Quarter range was missing. Your sources place the paper-based baseline in 2017; confirm the quarters in which digitization and standardization were completed." title="Quarter range was missing. Your sources place the paper-based baseline in 2017; confirm the quarters in which digitization and standardization were completed.">2017</span> <span data-time></span></div><div class="drow"><b>Capability Walk depends on</b><span class="fix" data-kind="add" data-note="6.36 asks Crawl cards to state the capability Walk depends on." title="6.36 asks Crawl cards to state the capability Walk depends on.">A digital, standardized and integrated data layer that customer tools and AI models can read and trust.</span></div><div class="drow"><b>If removed</b><span class="fix" data-kind="add" data-note="Added the &#x27;removal test&#x27; from 6.41." title="Added the &#x27;removal test&#x27; from 6.41.">W1 (real-time ordering, invoicing and tracking) and W2 (Maersk Flow, Captain Peter) would have no consistent data to show customers.</span></div><div class="drow"><b>Sources</b>Dagar et al. (2024) · Vlacic (2022) · Rios (2021) · TradeLens (2020)</div></div><div class="ds" data-id="W1"><span class="idb">W1</span><h3>Real-time digital ordering, invoicing and tracking</h3><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>Converted digitized data into live customer-facing status visibility (Dagar et al., 2024).</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="Quarter range was missing. Estimated from two Maersk pages: e-pay solutions &#x27;launched&#x27; (investor update, 9 Feb 2018) and self-service instant booking (Maersk newsroom, 26 Jun 2019). Confirm against Dagar et al. (2024)." title="Quarter range was missing. Estimated from two Maersk pages: e-pay solutions &#x27;launched&#x27; (investor update, 9 Feb 2018) and self-service instant booking (Maersk newsroom, 26 Jun 2019). Confirm against Dagar et al. (2024).">2018 – 2019</span> <span data-time></span></div><div class="drow"><b>Depends on</b><span class="fix" data-kind="add" data-note="6.36 requires each Walk card to name its Crawl dependency and what it enables (your key 1)." title="6.36 requires each Walk card to name its Crawl dependency and what it enables (your key 1).">C2 — digital, consistent documents let status and invoices flow without manual re-keying.</span></div><div class="drow"><b>Limited scope</b><span class="fix" data-kind="verify" data-note="6.36 requires a limited deployment scope. This is our proposal — replace with the scope your sources support." title="6.36 requires a limited deployment scope. This is our proposal — replace with the scope your sources support.">Container customers using Maersk’s digital booking, e-pay and tracking channels.</span></div><div class="drow"><b>Readiness outcome</b><span class="fix" data-kind="verify" data-note="6.36 requires one measurable outcome that signals readiness to run. Proposed by us; align with what your sources report." title="6.36 requires one measurable outcome that signals readiness to run. Proposed by us; align with what your sources report.">Share of customers’ shipments tracked live without a manual status request (dashboard metric M3).</span></div><div class="drow"><b>Sources</b>Dagar et al. (2024)</div></div><div class="ds" data-id="W2"><span class="idb">W2</span><h3>Maersk Flow and Captain Peter customer tools</h3><p class="inc"><span class="fix" data-kind="edit" data-note="Merged Maersk Flow and Captain Peter (your dependency key 7 already treats them together) to keep the roadmap at 6–8 initiatives." title="Merged Maersk Flow and Captain Peter (your dependency key 7 already treats them together) to keep the roadmap at 6–8 initiatives.">Includes 2 inventory items: Maersk Flow · Captain Peter</span></p><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>Maersk Flow: one-stop digital supply-chain and fulfillment tool, origin to final delivery (Maersk, 2021). Captain Peter: reefer cargo monitoring with customizable service and pricing (Maersk, 2019).</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="Quarter range was missing. Captain Peter was in customer testing in early 2019; Maersk Flow launched 28 Jul 2020 (Maersk newsroom). Confirm." title="Quarter range was missing. Captain Peter was in customer testing in early 2019; Maersk Flow launched 28 Jul 2020 (Maersk newsroom). Confirm.">2019 – Q3 2020</span> <span data-time></span></div><div class="drow"><b>Depends on</b><span class="fix" data-kind="add" data-note="Your key 2 said &#x27;Resolve core data-integration challenges → Maersk Flow&#x27;; we added the &#x27;enables&#x27; wording 6.36 requires." title="Your key 2 said &#x27;Resolve core data-integration challenges → Maersk Flow&#x27;; we added the &#x27;enables&#x27; wording 6.36 requires.">C2 — resolved data-integration challenges let Flow combine data from many partners without translating each format.</span></div><div class="drow"><b>Limited scope</b><span class="fix" data-kind="add" data-note="6.36 requires a limited deployment scope. Flow&#x27;s SME focus is stated in the Maersk newsroom release of 28 Jul 2020." title="6.36 requires a limited deployment scope. Flow&#x27;s SME focus is stated in the Maersk newsroom release of 28 Jul 2020.">Flow: small and mid-size customers. Captain Peter: reefer (refrigerated) customers.</span></div><div class="drow"><b>Readiness outcome</b><span class="fix" data-kind="verify" data-note="6.36 requires a measurable outcome. Figure comes from a FreightWaves article we found; check it before citing." title="6.36 requires a measurable outcome. Figure comes from a FreightWaves article we found; check it before citing.">FreightWaves (2019) reports 2,300+ customers, about 70% of Maersk’s reefer customers, on the RCM platform that hosts Captain Peter.</span></div><div class="drow"><b>Sources</b>Maersk (2021) · Maersk (2020) Flow · Maersk (2019) Captain Peter</div></div><div class="ds" data-id="W3"><span class="idb">W3</span><h3>Automated container terminal with RFID/AGVs</h3><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>First fully automated terminal; robotic picking, GPS/telematics tracking (Petersen, 2015; Dujak & Sajter, 2019).</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="TIMELINE CONFLICT. APM Terminals Maasvlakte II (Rotterdam) made its first vessel call in Feb 2015 and opened officially in Apr 2015, i.e. before the 2017 CIO appointment in C1. Either re-scope W3 to the post-2017 roll-out of RFID/AGV/telematics tracking, or change the C1 → W3 dependency. Your call." title="TIMELINE CONFLICT. APM Terminals Maasvlakte II (Rotterdam) made its first vessel call in Feb 2015 and opened officially in Apr 2015, i.e. before the 2017 CIO appointment in C1. Either re-scope W3 to the post-2017 roll-out of RFID/AGV/telematics tracking, or change the C1 → W3 dependency. Your call.">2015 – 2019</span> <span data-time></span></div><div class="drow"><b>Depends on</b><span class="fix" data-kind="verify" data-note="Kept your dependency, but see the timeline conflict flagged on this card." title="Kept your dependency, but see the timeline conflict flagged on this card.">C1 — technology ownership and funding for RFID, AGV and telematics systems (your key 3).</span></div><div class="drow"><b>Limited scope</b><span class="fix" data-kind="add" data-note="6.36 requires a limited deployment scope." title="6.36 requires a limited deployment scope.">One terminal in one port: Rotterdam.</span></div><div class="drow"><b>Readiness outcome</b><span class="fix" data-kind="verify" data-note="6.36 requires a measurable outcome. Proposed by us." title="6.36 requires a measurable outcome. Proposed by us.">Share of terminal moves captured with RFID/GPS/telematics data, which is the sensor history R2 needs.</span></div><div class="drow"><b>Sources</b>Petersen (2015) · Dujak & Sajter (2019)</div></div><div class="ds" data-id="R1"><span class="idb">R1</span><h3>Logistics Hub: AI arrival-time prediction</h3><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>Machine learning on historical voyages and GPS data to predict vessel arrival times (Maersk, 2026; Lindhardt, 2023).</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="Quarter range was missing and we could not find a launch date. Your sources are Lindhardt (2023) and an undated Maersk page labelled 2026. Confirm the launch quarter." title="Quarter range was missing and we could not find a launch date. Your sources are Lindhardt (2023) and an undated Maersk page labelled 2026. Confirm the launch quarter.">2023 onward</span> <span data-time></span></div><div class="drow"><b>Scales</b><span class="fix" data-kind="add" data-note="6.36 requires each Run card to name the Walk initiative it scales." title="6.36 requires each Run card to name the Walk initiative it scales.">W1 — years of live tracking and voyage history are the data the model trains on (your key 5).</span></div><div class="drow"><b>Full-scale scope</b><span class="fix" data-kind="verify" data-note="6.36 requires a full-scale scope. Proposed by us; confirm with the Maersk page." title="6.36 requires a full-scale scope. Proposed by us; confirm with the Maersk page.">Arrival-time predictions across the network, shown to customers and planners.</span></div><div class="drow"><b>Org change required</b><span class="fix" data-kind="add" data-note="6.36 requires the organizational change needed to sustain a Run initiative. This was missing from your Run phase." title="6.36 requires the organizational change needed to sustain a Run initiative. This was missing from your Run phase.">Planners and customer-service staff move from updating ETAs by hand to handling model exceptions; a Head of Data/AI (RACI decision 3) owns model data and quality.</span></div><div class="drow"><b>Sources</b>Maersk (2026) · Lindhardt (2023)</div></div><div class="ds" data-id="R2"><span class="idb">R2</span><h3>Predictive maintenance and digital twin</h3><p class="inc"><span class="fix" data-kind="edit" data-note="Merged predictive maintenance and digital twin (both depend on your key 6) to keep the roadmap at 6–8 initiatives." title="Merged predictive maintenance and digital twin (both depend on your key 6) to keep the roadmap at 6–8 initiatives.">Includes 2 inventory items: predictive maintenance (ship engine sensors) · digital twin simulation</span></p><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>Sensors alert before failure instead of reactive repair; a digital twin models vessel performance and route options to optimize and cut emissions (Dotzer, 2021).</div><div class="drow"><b>Timing</b><span class="fix" data-kind="verify" data-note="Quarter range was missing; Dotzer (2021) is the only dated source." title="Quarter range was missing; Dotzer (2021) is the only dated source.">2021 onward</span> <span data-time></span></div><div class="drow"><b>Scales</b><span class="fix" data-kind="verify" data-note="Your key 6 links terminal/warehouse sensors to ship-engine maintenance and vessel twins. Check that the dependency is really terminal sensors and not vessel sensor data." title="Your key 6 links terminal/warehouse sensors to ship-engine maintenance and vessel twins. Check that the dependency is really terminal sensors and not vessel sensor data.">W3 — continuous sensor histories from automated equipment (your key 6).</span></div><div class="drow"><b>Full-scale scope</b><span class="fix" data-kind="verify" data-note="6.36 requires a full-scale scope. Based on your wording; confirm." title="6.36 requires a full-scale scope. Based on your wording; confirm.">Engine sensors across the fleet raise alerts before failure; the twin models vessel performance and routes.</span></div><div class="drow"><b>Org change required</b><span class="fix" data-kind="add" data-note="6.36 requires the organizational change needed to sustain a Run initiative." title="6.36 requires the organizational change needed to sustain a Run initiative.">Maintenance and fleet teams shift from reactive repair to alert-driven scheduling and need new data skills (links to RACI decision 7).</span></div><div class="drow"><b>Sources</b><span class="fix" data-kind="verify" data-note="SOURCE PROBLEM. Dotzer (2021) describes Maersk Tankers, which A.P. Moller Holding has owned since 10 Oct 2017, so it is outside the A.P. Moller–Maersk case. Predictive maintenance also has no source in your document. Replace or justify both." title="SOURCE PROBLEM. Dotzer (2021) describes Maersk Tankers, which A.P. Moller Holding has owned since 10 Oct 2017, so it is outside the A.P. Moller–Maersk case. Predictive maintenance also has no source in your document. Replace or justify both.">Dotzer (2021) — see source warning</span></div></div><div class="ds" data-id="R3"><span class="idb">R3</span><h3>TradeLens ecosystem platform (launched 2018, discontinued 2022)<span class="badge-red">Discontinued 2022</span></h3><p class="inc"><span class="fix" data-kind="edit" data-note="Merged the TradeLens launch (Walk) and the ecosystem play (Run) into one initiative: it is one product with one dependency story." title="Merged the TradeLens launch (Walk) and the ecosystem play (Run) into one initiative: it is one product with one dependency story.">Includes 2 inventory items: TradeLens launch (customer-visible layer) · TradeLens as ecosystem/platform play</span></p><div class="dpills" data-deps></div><div class="drow"><b>What it delivers</b>Open blockchain platform for any shipping-ecosystem player. At launch it cut trucker terminal entry/exit time from 105 to 35 minutes (Maersk, 2020).</div><div class="drow"><b>Timing</b><span class="fix" data-kind="add" data-note="Quarter range was missing. Maersk and IBM announced the discontinuation on 29 Nov 2022, with the platform offline by end of Q1 2023 (Maersk newsroom)." title="Quarter range was missing. Maersk and IBM announced the discontinuation on 29 Nov 2022, with the platform offline by end of Q1 2023 (Maersk newsroom).">Aug 2018 – Q1 2023</span> <span data-time></span></div><div class="drow"><b>Scales</b><span class="fix" data-kind="add" data-note="6.36 requires each Run card to name the Walk initiative it scales; both of your keys (4 and 7) are shown." title="6.36 requires each Run card to name the Walk initiative it scales; both of your keys (4 and 7) are shown.">W2 — Flow and Captain Peter customer relationships seed the platform (key 7); also needs the shared data standards from C2 (key 4).</span></div><div class="drow"><b>Full-scale scope</b><span class="fix" data-kind="add" data-note="6.36 requires a full-scale scope." title="6.36 requires a full-scale scope.">An open platform for carriers, ports, customs and customers across global trade.</span></div><div class="drow"><b>Org change required</b><span class="fix" data-kind="add" data-note="6.36 requires the organizational change needed to sustain a Run initiative. Quote basis: Maersk newsroom, 29 Nov 2022." title="6.36 requires the organizational change needed to sustain a Run initiative. Quote basis: Maersk newsroom, 29 Nov 2022.">Neutral, multi-carrier governance: competitors had to trust a Maersk-led platform. Maersk said full global industry collaboration was not achieved.</span></div><div class="drow"><b>Sources</b>IBM (2018) · TradeLens (2023) · Maersk (2020)</div></div></div></aside>
+<div class="depedit glass is-modal" id="depedit" role="dialog" aria-label="Edit dependency"><div class="de-h"><b id="deId">D1</b><button class="btn sm" id="deClose" type="button">Done</button></div>
+<label for="deFrom">From (enabling)</label><select id="deFrom"></select><label for="deTo">To (enabled)</label><select id="deTo"></select><label for="deText">Enables&hellip;</label><input id="deText" type="text" placeholder="the capability this dependency enables">
+<div class="de-w" id="deWarn"></div><div class="de-f"><button class="btn sm" id="deDel" type="button">Delete</button></div></div>
+<div class="rmhover glass" id="rmHover"></div>
+<div class="rmhelp glass is-modal" id="rmHelp"><h4>How to edit the roadmap</h4><ul><li><b>Drag a box</b> up or down to move it in time, or sideways into another panel to change its phase.</li><li><b>Drag its top or bottom edge</b> to change its time frame (snaps to quarters).</li><li><b>Drag from the dot</b> on a box&rsquo;s right edge onto another box to add a dependency.</li><li><b>Click a line</b> to change its ends or its wording, or to delete it.</li><li><b>Click a box</b> for the full details.</li></ul></div>
+<div class="pager" id="pager"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<aside class="drawer glass" id="drawer" aria-label="Edits on this page"></aside>
+<script>window.G1CFG={"page": "roadmap.html", "order": ["index.html", "roadmap.html", "raci.html", "dashboard.html"], "labels": {"index.html": "About us", "roadmap.html": "Roadmap", "raci.html": "RACI", "dashboard.html": "Dashboard"}, "avatars": {"Marie Vo": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRENFRkY4Ii8+PHBhdGggZD0iTTI5IDQ3Yy0zLTIxIDYtMzIgMTktMzJzMjIgMTEgMTkgMzJjLTEgOC0zIDEyLTUgMTRIMzRjLTItMi00LTYtNS0xNHoiIGZpbGw9IiMxRjFCMUEiLz48cGF0aCBkPSJNNiAxMDBjMC0yMiAxOS0zMiA0Mi0zMnM0MiAxMCA0MiAzMnoiIGZpbGw9IiM3Q0M4RTYiLz48cmVjdCB4PSI0MSIgeT0iNTUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgcng9IjYiIGZpbGw9IiNFOEI3OTEiLz48ZWxsaXBzZSBjeD0iNDgiIGN5PSI0MyIgcng9IjE2IiByeT0iMTgiIGZpbGw9IiNFOEI3OTEiLz48cGF0aCBkPSJNMzEgMzdjMy05IDEwLTE0IDE3LTE0czE0IDUgMTcgMTRjLTgtMy0xNC02LTE3LTZzLTkgMy0xNyA2eiIgZmlsbD0iIzFGMUIxQSIvPjxjaXJjbGUgY3g9IjQyLjUiIGN5PSI0NSIgcj0iMS44IiBmaWxsPSIjMmEyYTJhIi8+PGNpcmNsZSBjeD0iNTMuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48cGF0aCBkPSJNNDMgNTIuNXE1IDQgMTAgMCIgc3Ryb2tlPSIjN2E0YTNhIiBzdHJva2Utd2lkdGg9IjEuOCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvc3ZnPg==", "Ai Ky Chung": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRTNGM0ZBIi8+PGNpcmNsZSBjeD0iNDgiIGN5PSIxNiIgcj0iOC41IiBmaWxsPSIjMkIyMjIwIi8+PHBhdGggZD0iTTYgMTAwYzAtMjIgMTktMzIgNDItMzJzNDIgMTAgNDIgMzJ6IiBmaWxsPSIjMkU5Q0M2Ii8+PHJlY3QgeD0iNDEiIHk9IjU1IiB3aWR0aD0iMTQiIGhlaWdodD0iMTciIHJ4PSI2IiBmaWxsPSIjRjBDM0EwIi8+PGVsbGlwc2UgY3g9IjQ4IiBjeT0iNDMiIHJ4PSIxNiIgcnk9IjE4IiBmaWxsPSIjRjBDM0EwIi8+PHBhdGggZD0iTTMxIDQxYzAtMTQgOC0yMSAxNy0yMXMxNyA3IDE3IDIxYy01LTYtMTEtOS0xNy05cy0xMiAzLTE3IDl6IiBmaWxsPSIjMkIyMjIwIi8+PGNpcmNsZSBjeD0iNDIuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48Y2lyY2xlIGN4PSI1My41IiBjeT0iNDUiIHI9IjEuOCIgZmlsbD0iIzJhMmEyYSIvPjxwYXRoIGQ9Ik00MyA1Mi41cTUgNCAxMCAwIiBzdHJva2U9IiM3YTRhM2EiIHN0cm9rZS13aWR0aD0iMS44IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+", "Linh Tran": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjQ0RFQUY2Ii8+PHBhdGggZD0iTTI3IDQ2Yy0zLTIyIDgtMzIgMjEtMzJzMjQgMTAgMjEgMzJjMCAxNCAyIDIyIDcgMjhIMjBjNS02IDctMTQgNy0yOHoiIGZpbGw9IiMzQjJBMjIiLz48cGF0aCBkPSJNNiAxMDBjMC0yMiAxOS0zMiA0Mi0zMnM0MiAxMCA0MiAzMnoiIGZpbGw9IiM0MkIwRDUiLz48cmVjdCB4PSI0MSIgeT0iNTUiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgcng9IjYiIGZpbGw9IiNGMUM2QTQiLz48ZWxsaXBzZSBjeD0iNDgiIGN5PSI0MyIgcng9IjE2IiByeT0iMTgiIGZpbGw9IiNGMUM2QTQiLz48cGF0aCBkPSJNMzEgMzljMi0xMiAxMC0xOCAxOC0xOHMxNSA2IDE3IDE4Yy02LTYtMTItOS0xOC05cy0xMiAzLTE3IDl6IiBmaWxsPSIjM0IyQTIyIi8+PGNpcmNsZSBjeD0iNDIuNSIgY3k9IjQ1IiByPSIxLjgiIGZpbGw9IiMyYTJhMmEiLz48Y2lyY2xlIGN4PSI1My41IiBjeT0iNDUiIHI9IjEuOCIgZmlsbD0iIzJhMmEyYSIvPjxwYXRoIGQ9Ik00MyA1Mi41cTUgNCAxMCAwIiBzdHJva2U9IiM3YTRhM2EiIHN0cm9rZS13aWR0aD0iMS44IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L2c+PC9zdmc+", "Nguyen Le": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJjIj48Y2lyY2xlIGN4PSI0OCIgY3k9IjQ4IiByPSI0OCIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjKSI+PHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9Ijk2IiBmaWxsPSIjRDNFQkY2Ii8+PHBhdGggZD0iTTYgMTAwYzAtMjIgMTktMzIgNDItMzJzNDIgMTAgNDIgMzJ6IiBmaWxsPSIjNURCOURDIi8+PHJlY3QgeD0iNDEiIHk9IjU1IiB3aWR0aD0iMTQiIGhlaWdodD0iMTciIHJ4PSI2IiBmaWxsPSIjRTNCMjhBIi8+PGVsbGlwc2UgY3g9IjQ4IiBjeT0iNDMiIHJ4PSIxNiIgcnk9IjE4IiBmaWxsPSIjRTNCMjhBIi8+PHBhdGggZD0iTTMxIDQxYy0xLTE1IDctMjMgMTctMjNzMTggOCAxNyAyM2MtMy01LTYtOC05LTktNiAzLTE0IDMtMjAgMC0zIDEtNCA0LTUgOXoiIGZpbGw9IiMxRTFBMTkiLz48Y2lyY2xlIGN4PSI0Mi41IiBjeT0iNDUiIHI9IjEuOCIgZmlsbD0iIzJhMmEyYSIvPjxjaXJjbGUgY3g9IjUzLjUiIGN5PSI0NSIgcj0iMS44IiBmaWxsPSIjMmEyYTJhIi8+PHBhdGggZD0iTTQzIDUyLjVxNSA0IDEwIDAiIHN0cm9rZT0iIzdhNGEzYSIgc3Ryb2tlLXdpZHRoPSIxLjgiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4="}, "owner": "Marie Vo", "routes": {"Marie Vo": "roadmap.html", "Ai Ky Chung": "raci.html", "Linh Tran": "dashboard.html", "Nguyen Le": "dashboard.html"}};</script>
+<script>
+
+(function(){
+var C=window.G1CFG, ORDER=C.order, PAGE=C.page;
+var REVIEW_MODE = true;     // set to false before you submit: removes the review tools and every highlight
+var G1=window.G1={cfg:C, leaving:false, noWheelNav:false};
+G1.esc=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')};
+G1.load=function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+G1.save=function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+var toastT; G1.toast=function(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show')},2600)};
+G1.modalOpen=function(){return !!document.querySelector('.is-modal.show')};
+
+/* ---------- page change ---------- */
+function idx(u){var f=(u||'').split('#')[0].split('?')[0].split('/').pop()||'index.html';return ORDER.indexOf(f)}
+addEventListener('pageswap',function(e){try{if(e.activation&&e.activation.entry){document.documentElement.dataset.vt=idx(e.activation.entry.url)<idx(location.href)?'back':'fwd'}}catch(_){}});
+addEventListener('pagereveal',function(e){try{var f=navigation.activation&&navigation.activation.from;if(f)document.documentElement.dataset.vt=idx(f.url)>idx(location.href)?'back':'fwd'}catch(_){}});
+var nativeVT=('PageRevealEvent' in window)&&/^https?:$/.test(location.protocol)&&!(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches);
+G1.go=function(href,dir){
+  if(G1.leaving) return;
+  var file=href.split('#')[0], hash=href.indexOf('#')>-1?href.slice(href.indexOf('#')):'';
+  if(file===PAGE||file===''){ if(hash) location.hash=hash; return }
+  G1.leaving=true; dir=dir||(ORDER.indexOf(file)>ORDER.indexOf(PAGE)?'down':'up');
+  if(nativeVT){ location.href=href; return }
+  try{sessionStorage.setItem('g1t',JSON.stringify({dir:dir,ts:Date.now()}))}catch(e){}
+  document.documentElement.classList.add('leaving-'+dir);
+  setTimeout(function(){location.href=href},520);
+};
+addEventListener('pageshow',function(e){ if(e.persisted){G1.leaving=false;document.documentElement.classList.remove('leaving-down','leaving-up')} });
+(function(){var s=document.querySelector('.stage');if(s)s.addEventListener('animationend',function(){document.documentElement.classList.remove('enter-down','enter-up')})})();
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a[href]'); if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||a.target==='_blank') return;
+  var h=a.getAttribute('href'), f=h.split('#')[0];
+  if(ORDER.indexOf(f)>-1 && f!==PAGE){ e.preventDefault(); G1.go(h) }
+});
+
+/* ---------- avatars fetched from the internet (with a lettered fallback) ---------- */
+G1.avatarUrl=function(seed){return 'https://api.dicebear.com/9.x/notionists-neutral/svg?seed='+encodeURIComponent(seed)+'&backgroundColor=d3ebf5,bfe0ef,e6f3f9'};
+G1.av=function(seed,abbr,hue,cls){return '<span class="av '+(cls||'')+'" style="--h:'+hue+'">'+G1.esc(abbr)+'<img src="'+G1.avatarUrl(seed)+'" alt="" loading="lazy" onerror="this.remove()"></span>'};
+
+/* ---------- left rail: shown by default; auto-hide is the default only on the roadmap and dashboard ---------- */
+(function(){
+  var nav=document.getElementById('gnav'),hot=document.getElementById('navHot'),handle=document.getElementById('gnHandle'),acct=document.getElementById('acct'),btn=document.getElementById('navMode'),t;
+  var KEY='g1-nav-'+PAGE,DEF=(PAGE==='roadmap.html'||PAGE==='dashboard.html'),auto=G1.load(KEY,DEF);
+  function pinned(){return !auto&&innerWidth>=900}
+  function refresh(){var p=pinned();document.body.classList.toggle('nav-pinned',p);if(p)nav.classList.add('show');else if(!nav.matches(':hover'))nav.classList.remove('show');
+    btn.classList.toggle('on',!auto);btn.setAttribute('data-tip',auto?'Auto-hide is on. Click to keep the menu visible':'Menu is pinned. Click to auto-hide it');btn.setAttribute('aria-pressed',String(!auto))}
+  function show(){clearTimeout(t);nav.classList.add('show');document.body.classList.add('nav-open')}
+  function hide(){clearTimeout(t);if(pinned())return;t=setTimeout(function(){if(pinned()||nav.matches(':hover')||nav.contains(document.activeElement)&&document.activeElement.matches(':focus-visible'))return;acct.classList.remove('open');nav.classList.remove('show');document.body.classList.remove('nav-open')},450)}
+  hot.addEventListener('pointerenter',show);hot.addEventListener('pointermove',function(){if(!nav.classList.contains('show'))show()});hot.addEventListener('pointerleave',hide);
+  nav.addEventListener('pointerenter',show);nav.addEventListener('pointerleave',hide);nav.addEventListener('focusin',show);nav.addEventListener('focusout',hide);
+  handle.addEventListener('click',function(){nav.classList.contains('show')?(nav.classList.remove('show'),document.body.classList.remove('nav-open')):show()});
+  btn.addEventListener('click',function(){auto=!auto;G1.save(KEY,auto);refresh();if(auto){setTimeout(function(){if(!nav.matches(':hover'))hide()},900)}});
+  acct.querySelector('.gn-av').addEventListener('click',function(e){e.stopPropagation();acct.classList.toggle('open')});
+  document.addEventListener('click',function(e){if(!acct.contains(e.target))acct.classList.remove('open');if(!pinned()&&!nav.contains(e.target)&&window.matchMedia('(hover:none)').matches){nav.classList.remove('show');document.body.classList.remove('nav-open')}});
+  addEventListener('resize',refresh);
+  G1.toggleNav=function(){nav.classList.contains('show')?(nav.classList.remove('show'),document.body.classList.remove('nav-open')):show()};
+  refresh();
+  try{if(auto&&!sessionStorage.getItem('g1peek')){sessionStorage.setItem('g1peek','1');setTimeout(function(){show();setTimeout(hide,2200)},700)}}catch(e){}
+})();
+
+/* ---------- replace the page background with a real photo (upload or link), per page ---------- */
+(function(){
+  var KEY='g1-bg-'+PAGE,bg=document.getElementById('bg'),vl=document.getElementById('bgveil'),root=document.documentElement,btn=document.getElementById('bgBtn'),pop=null,DEF=bg.getAttribute('data-def')||'',DEFVA=parseFloat(vl.getAttribute('data-va')||'0');
+  function apply(){var s=G1.load(KEY,null);
+    if(s&&s.src){bg.style.backgroundImage='url("'+s.src+'")';bg.classList.add('has-photo','custom');bg.classList.remove('duo');bg.style.filter=s.blur?'blur('+s.blur+'px)':'';bg.style.transform=s.blur?'scale(1.06)':'';vl.style.setProperty('--va',(s.veil==null?40:s.veil)/100);
+      if(PAGE==='index.html')root.style.setProperty('--hero-img','url("'+s.src+'")')}
+    else{bg.style.backgroundImage=DEF;bg.classList.remove('custom');if(DEF){bg.classList.add('duo')}else{bg.classList.remove('has-photo')}bg.style.filter='';bg.style.transform='';vl.style.setProperty('--va',DEFVA);root.style.removeProperty('--hero-img')}}
+  function save(s,all){try{if(all){['index.html','roadmap.html','raci.html','dashboard.html'].forEach(function(f){localStorage.setItem('g1-bg-'+f,JSON.stringify(s))})}else localStorage.setItem(KEY,JSON.stringify(s));apply();ui();return true}catch(e){G1.toast('That photo is too large to store in the browser. Try a smaller one or paste a link.');return false}}
+  function cur(){return G1.load(KEY,null)||{src:'',veil:40,blur:0}}
+  function fromFile(f,all){if(!f)return;var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var m=1920,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);var q=.82,d=c.toDataURL('image/jpeg',q);while(d.length>2.6e6&&q>.4){q-=.1;d=c.toDataURL('image/jpeg',q)}var o=cur();save({src:d,veil:o.src?o.veil:40,blur:o.blur||0},all)};im.onerror=function(){G1.toast('That file is not an image')};im.src=r.result};r.readAsDataURL(f)}
+  function fromUrl(u,all){u=(u||'').trim();if(!/^(https?:\/\/|data:image\/)/i.test(u)){G1.toast('Paste a link that starts with https://');return}var im=new Image();im.onload=function(){var o=cur();save({src:u,veil:o.src?o.veil:40,blur:o.blur||0},all)};im.onerror=function(){G1.toast('That link could not be loaded as an image')};im.src=u}
+  function ui(){if(!pop)return;var s=G1.load(KEY,null),pv=pop.querySelector('.prev');if(s&&s.src){pv.style.backgroundImage='url("'+s.src+'")';pv.textContent=''}else{pv.style.backgroundImage='';pv.textContent=DEF?'Default photo':'Default background'}
+    pop.querySelector('[data-k=veil]').value=s&&s.src?s.veil:40;pop.querySelector('[data-k=blur]').value=s&&s.src?(s.blur||0):0;pop.querySelector('[data-o=veil]').textContent=(s&&s.src?s.veil:40)+'%';pop.querySelector('[data-o=blur]').textContent=(s&&s.src?(s.blur||0):0)+'px'}
+  function build(){pop=document.createElement('div');pop.className='bgpop glass is-modal';pop.innerHTML='<h4>Page background</h4><p>Use your own photo behind this page. It is saved in this browser only.</p><div class="prev"></div><div class="row"><button class="btn sm" type="button" data-a="up">Upload photo</button><input type="file" accept="image/*" hidden></div><div class="row"><input type="text" placeholder="or paste an image link (https://\u2026)" aria-label="Image link"><button class="btn sm" type="button" data-a="url">Use</button></div><label>Light veil <span data-o="veil">40%</span></label><input type="range" min="0" max="90" step="5" data-k="veil"><label>Blur <span data-o="blur">0px</span></label><input type="range" min="0" max="24" step="2" data-k="blur"><div class="acts"><button class="btn sm" type="button" data-a="all">Use on all pages</button><button class="btn sm" type="button" data-a="reset">Reset</button><button class="btn sm dark" type="button" data-a="close">Done</button></div>';document.body.appendChild(pop);
+    var file=pop.querySelector('input[type=file]'),txt=pop.querySelector('input[type=text]');
+    pop.addEventListener('click',function(e){var a=e.target.closest('[data-a]');if(!a)return;a=a.dataset.a;
+      if(a==='up')file.click();else if(a==='url')fromUrl(txt.value,false);else if(a==='close')close();
+      else if(a==='reset'){try{localStorage.removeItem(KEY)}catch(_){}apply();ui();G1.toast('Background reset')}
+      else if(a==='all'){var s=G1.load(KEY,null);if(!s||!s.src){G1.toast('Choose a photo first');return}if(save(s,true))G1.toast('Photo applied to all four pages')}});
+    file.addEventListener('change',function(){fromFile(file.files[0],false);file.value=''});
+    txt.addEventListener('keydown',function(e){if(e.key==='Enter')fromUrl(txt.value,false)});
+    pop.addEventListener('input',function(e){var k=e.target.dataset&&e.target.dataset.k;if(!k)return;var s=cur();if(!s.src){G1.toast('Choose a photo first');e.target.value=k==='veil'?40:0;return}s[k]=+e.target.value;try{localStorage.setItem(KEY,JSON.stringify(s))}catch(_){}apply();ui()});
+    ui()}
+  function open(){if(!pop)build();pop.classList.add('show');ui()}function close(){if(pop)pop.classList.remove('show')}
+  btn.addEventListener('click',function(e){e.stopPropagation();pop&&pop.classList.contains('show')?close():open()});
+  document.addEventListener('pointerdown',function(e){if(pop&&pop.classList.contains('show')&&!pop.contains(e.target)&&!e.target.closest('#bgBtn'))close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+  apply();
+})();
+
+/* ---------- scroll past the end: next page slides in immediately ---------- */
+(function(){
+  var idxp=ORDER.indexOf(PAGE), next=ORDER[idxp+1], prev=ORDER[idxp-1], pg=document.getElementById('pager');
+  if(next) pg.innerHTML='<i>\u2193</i><span>Keep scrolling: '+C.labels[next]+'</span>';
+  var atB=null,atT=null,acc=0,accT=0;
+  function bottom(){return innerHeight+scrollY>=document.documentElement.scrollHeight-3}
+  function top(){return scrollY<=2}
+  function poll(){var n=Date.now();
+    if(bottom()){if(atB===null)atB=n}else atB=null;
+    if(top()){if(atT===null)atT=n}else atT=null;
+    pg.classList.toggle('show',!!(next&&atB&&n-atB>450&&!G1.modalOpen()))}
+  setInterval(poll,200);addEventListener('scroll',poll,{passive:true});
+  function inner(el,dy){while(el&&el!==document.body){var s=getComputedStyle(el);if((s.overflowY==='auto'||s.overflowY==='scroll')&&el.scrollHeight>el.clientHeight+1){if(dy>0&&el.scrollTop+el.clientHeight<el.scrollHeight-1)return true;if(dy<0&&el.scrollTop>0)return true}el=el.parentElement}return false}
+  function fire(dir){if(G1.leaving||G1.modalOpen())return;G1.go(dir==='down'?next:prev,dir)}
+  addEventListener('wheel',function(e){
+    if(Math.abs(e.deltaX)>Math.abs(e.deltaY)||G1.leaving)return;var dy=e.deltaY,n=Date.now();
+    if(n-accT>500)acc=0;accT=n;
+    if(dy>0){if(next&&atB&&n-atB>450&&!inner(e.target,dy)){acc+=dy;if(acc>60)fire('down')}else acc=0}
+    else if(dy<0){if(prev&&!G1.noWheelNav&&atT&&n-atT>450&&!inner(e.target,dy)){acc+=-dy;if(acc>60)fire('up')}else acc=0}
+  },{passive:true});
+  var ty=null,t0=0;addEventListener('touchstart',function(e){ty=e.touches[0].clientY;t0=Date.now()},{passive:true});
+  addEventListener('touchend',function(e){if(ty===null)return;var d=e.changedTouches[0].clientY-ty;ty=null;var n=Date.now();
+    if(d<-70&&next&&atB&&n-atB>450)fire('down');else if(d>70&&prev&&!G1.noWheelNav&&atT&&n-atT>450)fire('up')},{passive:true});
+  addEventListener('keydown',function(e){if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName||''))return;var n=Date.now();
+    if(['ArrowDown','PageDown','End',' '].indexOf(e.key)>-1&&next&&atB&&n-atB>450)fire('down');
+    if(['ArrowUp','PageUp','Home'].indexOf(e.key)>-1&&prev&&!G1.noWheelNav&&atT&&n-atT>450)fire('up')});
+  pg.addEventListener('click',function(){if(next)fire('down')});
+})();
+
+/* ---------- review mode: highlights + list of edits ---------- */
+(function(){
+  var KEY='g1-edits-on',tgl=document.getElementById('rvToggle'),lst=document.getElementById('rvList'),cnt=document.getElementById('rvCount'),dr=document.getElementById('drawer');
+  if(!REVIEW_MODE){tgl.remove();lst.remove();document.body.classList.remove('edits-on');return}
+  function apply(on){document.body.classList.toggle('edits-on',on);try{localStorage.setItem(KEY,on?'1':'0')}catch(e){}}
+  var s=null;try{s=localStorage.getItem(KEY)}catch(e){} apply(s===null?true:s==='1');
+  tgl.addEventListener('click',function(){apply(!document.body.classList.contains('edits-on'))});
+  var names={add:'ADDED',edit:'FIXED',verify:'VERIFY'};
+  function list(){return [].slice.call(document.querySelectorAll('.fix[data-note]'))}
+  function count(){cnt.textContent=list().length}G1.recount=count;setTimeout(count,60);
+  function open(){var f=list(),h='<div class="drawer-h"><h3>Edits on this page ('+f.length+')</h3><button class="btn sm" type="button" id="drClose">Close</button></div><div class="drawer-b"><p class="hint">Yellow = added where something was missing. Pink = fixed or reworded. Orange = verify, or rewrite in your own words (course AI policy).</p>';
+    f.forEach(function(el,i){var t=(el.textContent||'').replace(/\s+/g,' ').trim();if(t.length>90)t=t.slice(0,90)+'\u2026';h+='<button type="button" class="di" data-i="'+i+'"><span class="k '+el.dataset.kind+'">'+names[el.dataset.kind]+'</span>'+G1.esc(el.dataset.note)+'<span class="sn">'+G1.esc(t)+'</span></button>'});
+    dr.innerHTML=h+'</div>';dr.classList.add('open');dr.__f=f}
+  lst.addEventListener('click',open);
+  dr.addEventListener('click',function(e){if(e.target.id==='drClose'){dr.classList.remove('open');return}
+    var b=e.target.closest('.di');if(!b)return;var el=dr.__f[+b.dataset.i];apply(true);if(G1.reveal)G1.reveal(el);
+    setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')},140);if(innerWidth<760)dr.classList.remove('open')});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')dr.classList.remove('open')});
+  [].forEach.call(document.querySelectorAll('[data-wc]'),function(el){var lim=el.dataset.wc.split('-'),txt=el.textContent.replace(/\[[^\]]*\]/g,' ').replace(/\s+/g,' ').trim(),n=txt?txt.split(' ').length:0,ok=n>=+lim[0]&&n<=+lim[1];
+    var b=document.createElement('div');b.className='wc';b.textContent=n+' words (target '+lim[0]+'\u2013'+lim[1]+') '+(ok?'\u2713':'\u2014 adjust');el.insertAdjacentElement('afterend',b)});
+})();
+})();
+
+</script>
+<script>
+window.RM={"inits": {"C1": {"short": "Appoint CIO/CTO", "name": "Appoint a dedicated CIO/CTO from within the business", "vf": true, "delivers": "Internal technical leadership with business credibility for the 2017 transformation."}, "C2": {"short": "Digitize & standardize documents and data", "name": "Digitize and standardize shipping documents and data", "vf": true, "delivers": "In 2017 up to 30 parties still exchanged up to 200 communications per container on paper (Dagar et al., 2024). Digital documents, common formats and integrated data replace that."}, "W1": {"short": "Real-time ordering, invoicing & tracking", "name": "Real-time digital ordering, invoicing and tracking", "vf": true, "delivers": "Converted digitized data into live customer-facing status visibility (Dagar et al., 2024)."}, "W2": {"short": "Maersk Flow & Captain Peter", "name": "Maersk Flow and Captain Peter customer tools", "vf": true, "delivers": "Maersk Flow: one-stop digital supply-chain and fulfillment tool, origin to final delivery (Maersk, 2021). Captain Peter: reefer cargo monitoring with customizable service and pricing (Maersk, 2019)."}, "W3": {"short": "Automated terminal + RFID/AGVs", "name": "Automated container terminal with RFID/AGVs", "vf": true, "delivers": "First fully automated terminal; robotic picking, GPS/telematics tracking (Petersen, 2015; Dujak & Sajter, 2019)."}, "R1": {"short": "Logistics Hub: AI arrival prediction", "name": "Logistics Hub: AI arrival-time prediction", "vf": true, "delivers": "Machine learning on historical voyages and GPS data to predict vessel arrival times (Maersk, 2026; Lindhardt, 2023)."}, "R2": {"short": "Predictive maintenance & digital twin", "name": "Predictive maintenance and digital twin", "vf": true, "delivers": "Sensors alert before failure instead of reactive repair; a digital twin models vessel performance and route options to optimize and cut emissions (Dotzer, 2021)."}, "R3": {"short": "TradeLens ecosystem platform", "name": "TradeLens ecosystem platform (launched 2018, discontinued 2022)", "vf": true, "delivers": "Open blockchain platform for any shipping-ecosystem player. At launch it cut trucker terminal entry/exit time from 105 to 35 minutes (Maersk, 2020)."}}, "phase": {"C1": "crawl", "C2": "crawl", "W1": "walk", "W2": "walk", "W3": "walk", "R1": "run", "R2": "run", "R3": "run"}, "tl": {"C1": [2017.0, 2018.0], "C2": [2017.0, 2018.0], "W1": [2018.0, 2020.0], "W2": [2019.0, 2020.75], "W3": [2015.0, 2020.0], "R1": [2023.0, 2025.0], "R2": [2021.0, 2024.0], "R3": [2018.5, 2023.25]}, "deps": [{"id": "D1", "from": "C2", "to": "W1", "text": "enables live ordering, invoicing and tracking without manual translation between document formats", "orig": true}, {"id": "D2", "from": "C2", "to": "W2", "text": "enables Maersk Flow to combine data from many partners without translating each party\u2019s format", "orig": true}, {"id": "D3", "from": "C1", "to": "W3", "text": "enables ownership and funding for port automation, RFID and AGV systems", "orig": true}, {"id": "D4", "from": "C2", "to": "R3", "text": "enables the shared data standards that an ecosystem platform assumes other carriers will adopt", "orig": true}, {"id": "D5", "from": "W1", "to": "R1", "text": "enables the historical tracking and voyage data that arrival-time models train on", "orig": true}, {"id": "D6", "from": "W3", "to": "R2", "text": "enables the continuous sensor histories that predictive maintenance and digital twins need", "orig": true}, {"id": "D7", "from": "W2", "to": "R3", "text": "enables the customer relationships and usage that seed an ecosystem platform", "orig": true}]};
+
+(function(){
+var R=window.RM,AXIS=50,PADX=7,CG=5,HEAD=60,LG=12,T0=2015,T1=2026,MINH=62,TOL=.25,PH=['crawl','walk','run'],PHN={crawl:'Crawl',walk:'Walk',run:'Run'},PHS={crawl:'Foundation',walk:'Deployment',run:'Scale'};
+var KEY='g1-roadmap-v2',ns='http://www.w3.org/2000/svg',tl=document.getElementById('tl');
+var S=G1.load(KEY,null);
+function defaults(){var t={};Object.keys(R.tl).forEach(function(k){t[k]={phase:R.phase[k],start:R.tl[k][0],end:R.tl[k][1]}});return{t:t,deps:JSON.parse(JSON.stringify(R.deps))}}
+if(!S||!S.t||Object.keys(S.t).length!==Object.keys(R.tl).length)S=defaults();
+function clampAll(){Object.keys(S.t).forEach(function(id){var it=S.t[id];it.start=Math.max(T0,Math.min(T1-.25,it.start));it.end=Math.max(it.start+.25,Math.min(T1,it.end))})}clampAll();
+var LAY=null,selDep=null,hoverId=null,selBox=null,conn=null,hT=null;
+function snap(v){return Math.round(v*4)/4}
+function commit(){G1.save(KEY,S);render();checks();depTable()}
+function fmtQ(t){var y=Math.floor(t+1e-9),q=Math.floor((t-y)*4+1e-9)+1;return 'Q'+q+' '+y}
+function range(it,short){if(short){var a=Math.floor(it.start+1e-9),b=Math.floor(it.end-.25+1e-9);return a===b?String(a):a+'\u2013'+String(b).slice(2)}return fmtQ(it.start)+' \u2013 '+fmtQ(it.end-.25)}
+function dur(it){var q=Math.round((it.end-it.start)*4);return q>=4?(q/4)+' yr':q+' qtr'}
+function layout(){
+  var W=tl.clientWidth,H=tl.clientHeight,lw=(W-AXIS-2*LG)/3,sc=(H-HEAD-10)/(T1-T0),L={W:W,H:H,sc:sc,lanes:{},boxes:{}};
+  PH.forEach(function(p,pi){var lx=AXIS+pi*(lw+LG),ids=Object.keys(S.t).filter(function(id){return S.t[id].phase===p}).sort(function(a,b){return S.t[a].start-S.t[b].start||S.t[a].end-S.t[b].end}),cls=[],cur=null;
+    L.lanes[p]={x:lx,w:lw,n:ids.length};
+    ids.forEach(function(id){var it=S.t[id];if(!cur||it.start>=cur.end-TOL){cur={end:it.end,cols:[]};cls.push(cur)}var c=0;while(cur.cols[c]!==undefined&&cur.cols[c]>it.start+TOL-1e-6)c++;cur.cols[c]=it.end;cur.end=Math.max(cur.end,it.end);L.boxes[id]={col:c,cl:cur}});
+    ids.forEach(function(id,k){var b=L.boxes[id],it=S.t[id],n=b.cl.cols.length,bw=(lw-2*PADX-(n-1)*CG)/n;b.w=bw;b.x=lx+PADX+b.col*(bw+CG);b.y=HEAD+(it.start-T0)*sc+1;b.h=Math.max(MINH,(it.end-it.start)*sc-2);b.z=3+k});
+  });return L}
+function bez(x1,y1,x2,y2){var dx=Math.max(50,Math.abs(x2-x1)*.5);return 'M'+x1+','+y1+' C'+(x1+dx)+','+y1+' '+(x2-dx)+','+y2+' '+x2+','+y2}
+function portOut(id){var b=LAY.boxes[id];return{x:b.x+b.w,y:b.y+b.h/2}}
+function portIn(id){var b=LAY.boxes[id];return{x:b.x,y:b.y+b.h/2}}
+function warnFor(d){var w=[],a=S.t[d.from],b=S.t[d.to];if(!a||!b)return w;
+  if(d.from===d.to)w.push('A box cannot depend on itself.');
+  if(PH.indexOf(b.phase)<PH.indexOf(a.phase))w.push('Points backwards: '+PHN[b.phase]+' comes before '+PHN[a.phase]+'.');
+  if(a.phase==='crawl'&&b.phase==='crawl')w.push('No Crawl initiative should depend on another Crawl initiative (6.36).');
+  if(b.start<a.start-1e-6)w.push(d.to+' starts ('+fmtQ(b.start)+') before '+d.from+' ('+fmtQ(a.start)+'). Check the timeline.');
+  return w}
+function render(){
+  var L=layout();LAY=L;var h='',y,sc=L.sc;
+  for(y=T0;y<=T1;y++)h+='<span class="yl" style="top:'+(HEAD+(y-T0)*sc)+'px">'+y+'</span>';
+  PH.forEach(function(p){var l=L.lanes[p];h+='<div class="lane '+p+'" style="left:'+l.x+'px;width:'+l.w+'px;height:'+L.H+'px"><div class="lh"><i class="dot"></i><div><b>'+PHN[p]+'</b><span>'+PHS[p]+' \u00b7 '+l.n+' initiative'+(l.n===1?'':'s')+'</span></div></div></div>';
+    for(y=T0;y<=T1;y++)h+='<i class="gl" style="left:'+(l.x+14)+'px;width:'+(l.w-28)+'px;top:'+(HEAD+(y-T0)*sc)+'px"></i>'});
+  var qn=G1.load('g1-quarter',null);if(qn){var ty=HEAD+((qn.y+qn.q/4-.125)-T0)*sc;if(ty>HEAD&&ty<L.H)h+='<div class="now" style="top:'+ty+'px;left:'+AXIS+'px;width:'+(L.W-AXIS)+'px"><span>Dashboard quarter: Q'+qn.q+' '+qn.y+'</span></div>'}
+  h+='<svg class="cn" width="'+L.W+'" height="'+L.H+'">';
+  var hid=hoverId||selBox;
+  S.deps.forEach(function(d){if(!L.boxes[d.from]||!L.boxes[d.to])return;var a=portOut(d.from),b=portIn(d.to),on=hid&&(d.from===hid||d.to===hid),dim=hid&&!on,w=warnFor(d).length&&d.from!==d.to;
+    var cl='cp'+(on?' hi':'')+(dim?' dim':'')+(selDep===d.id?' sel':'')+(w?' warn':''),p=bez(a.x,a.y,b.x,b.y);
+    h+='<path class="'+cl+'" d="'+p+'"/><path class="cph" data-dep="'+d.id+'" d="'+p+'"/><path d="M'+(b.x-9)+','+(b.y-6)+' L'+b.x+','+b.y+' L'+(b.x-9)+','+(b.y+6)+' Z" fill="'+(w?'#E0A126':'#42B0D5')+'" opacity="'+(dim?.2:.95)+'"/>';
+    h+='<g class="cb" opacity="'+(dim?.25:1)+'"><circle cx="'+(b.x-26)+'" cy="'+(b.y-13)+'" r="10.5"/><text x="'+(b.x-26)+'" y="'+(b.y-9.5)+'">'+d.id+'</text></g>'});
+  h+='</svg>';
+  Object.keys(S.t).forEach(function(id){var it=S.t[id],b=L.boxes[id],m=R.inits[id],cls=(b.h<76?'hs':(b.h<132?'hm':'hx'))+(b.w<150?' nw':'');
+    var inn=S.deps.filter(function(d){return d.to===id}).map(function(d){return d.from}),out=S.deps.filter(function(d){return d.from===id}).map(function(d){return d.to});
+    var dp=(inn.length?'\u2190 '+inn.join(', '):'')+(inn.length&&out.length?'  \u00b7  ':'')+(out.length?'\u2192 '+out.join(', '):'');
+    var rel=hid&&(id===hid||S.deps.some(function(d){return (d.from===hid&&d.to===id)||(d.to===hid&&d.from===id)}));
+    h+='<div class="bx '+it.phase+' '+cls+(R.inits[id].vf?' vf':'')+(hid&&!rel?' dim':'')+(rel&&id!==hid?' hl':'')+(selBox===id?' sel':'')+(conn&&conn.over===id?' tgt':'')+'" data-id="'+id+'" style="left:'+b.x+'px;top:'+b.y+'px;width:'+b.w+'px;height:'+b.h+'px;z-index:'+b.z+'"><i class="hdl t" data-id="'+id+'" data-k="t"></i><div class="bh"><span class="id">'+id+'</span><span class="tm">'+range(it,b.w<150)+'</span></div><div class="ti">'+G1.esc(m.short)+'</div><div class="dp">'+dp+'</div><div class="bd">'+G1.esc(m.delivers)+'</div><i class="hdl b" data-id="'+id+'" data-k="b"></i></div>';
+    var po=portOut(id),pi=portIn(id),vis=(hid===id||conn)?' vis':'';
+    h+='<span class="port out'+vis+'" data-id="'+id+'" title="Drag onto another box to connect" style="left:'+po.x+'px;top:'+po.y+'px;z-index:'+(b.z+40)+'"></span><span class="port in'+vis+'" data-id="'+id+'" style="left:'+pi.x+'px;top:'+pi.y+'px;z-index:'+(b.z+40)+'"></span>'});
+  tl.innerHTML=h;
+}
+function checks(){
+  var ids=Object.keys(S.t),by=function(p){return ids.filter(function(i){return S.t[i].phase===p})};
+  var cc=S.deps.filter(function(d){return S.t[d.from]&&S.t[d.to]&&S.t[d.from].phase==='crawl'&&S.t[d.to].phase==='crawl'}).length;
+  var wb=by('walk').filter(function(w){return !S.deps.some(function(d){return d.to===w&&S.t[d.from]&&S.t[d.from].phase==='crawl'})});
+  var rb=by('run').filter(function(r){return !S.deps.some(function(d){return d.to===r&&S.t[d.from]&&S.t[d.from].phase==='walk'})});
+  var tb=S.deps.filter(function(d){return warnFor(d).some(function(x){return /starts/.test(x)||/backwards/.test(x)})});
+  var n=ids.length,cnt=PH.map(function(p){return by(p).length});var sb=document.getElementById('rmSub');if(sb)sb.textContent='Deliverable 1 \u00b7 '+n+' initiatives \u00b7 '+S.deps.length+' dependencies';
+  var rows=[[n>=6&&n<=8,n+' initiatives','The brief asks for 6\u20138 initiatives'],[cnt.every(function(c){return c>=1&&c<=3}),'Crawl '+cnt[0]+' \u00b7 Walk '+cnt[1]+' \u00b7 Run '+cnt[2],'Typically 2\u20133 per phase'],
+   [cc===0,cc===0?'No Crawl\u2192Crawl':cc+' Crawl\u2192Crawl','No Crawl initiative should depend on another Crawl initiative'],
+   [!wb.length,wb.length?'Walk needs Crawl: '+wb.join(', '):'Walk \u2190 Crawl','Every Walk initiative names its Crawl dependency'],
+   [!rb.length,rb.length?'Run needs Walk: '+rb.join(', '):'Run \u2190 Walk','Every Run initiative names the Walk initiative it scales'],
+   [!tb.length,tb.length?'Time order: '+tb.map(function(d){return d.from+'\u2192'+d.to}).join(', '):'Time order','Dependencies should run forward in time']];
+  document.getElementById('rmChecks').innerHTML=rows.map(function(r){return '<span class="ck'+(r[0]?'':' warn')+'" title="'+G1.esc(r[2])+'">'+G1.esc(r[1])+'</span>'}).join('');
+}
+function depTable(){
+  document.getElementById('depRows').innerHTML=S.deps.map(function(d){var a=R.inits[d.from],b=R.inits[d.to],w=warnFor(d);
+    var t=d.orig?'<span class="fix" data-kind="add" data-note="6.36 says every arrow must name both endpoints and the capability it enables. Your PDF listed the endpoints (keys 1\u20137) but not the capability. We wrote it." title="Added by us">'+G1.esc(d.text)+'</span>':G1.esc(d.text);
+    return '<tr><td class="mono">'+d.id+'</td><td><b>'+d.from+'</b> '+G1.esc(a?a.short:'')+'</td><td><b>'+d.to+'</b> '+G1.esc(b?b.short:'')+'</td><td>'+t+(w.length?'<div style="color:#8a5a00;font-size:13px;margin-top:4px">\u26A0 '+G1.esc(w[0])+'</div>':'')+'</td><td><button class="btn sm" data-edit="'+d.id+'" type="button">Edit</button></td></tr>'}).join('');
+  if(G1.recount)G1.recount()}
+/* ---------- hover card ---------- */
+var hv=document.getElementById('rmHover');
+function showHover(id){var el=tl.querySelector('.bx[data-id="'+id+'"]');if(!el||document.body.classList.contains('rm-drag'))return;var it=S.t[id],m=R.inits[id],r=el.getBoundingClientRect();
+  var inn=S.deps.filter(function(d){return d.to===id}).map(function(d){return d.from}),out=S.deps.filter(function(d){return d.from===id}).map(function(d){return d.to});
+  hv.innerHTML='<div class="r"><span class="id">'+id+'</span><span class="chip">'+PHN[it.phase]+'</span></div><h4>'+G1.esc(m.short)+'</h4><div class="tm">'+range(it,false)+' \u00b7 '+dur(it)+'</div><p>'+G1.esc(m.delivers)+'</p><small>'+(inn.length?'Needs '+inn.join(', ')+'. ':'')+(out.length?'Enables '+out.join(', ')+'. ':'')+'Click for full details.</small>';
+  var w=300,hh=hv.offsetHeight||190,left=r.right+12;if(left+w>innerWidth-12)left=r.left-w-12;if(left<12)left=Math.max(12,Math.min(r.left,innerWidth-w-12));
+  hv.style.left=left+'px';hv.style.top=Math.max(12,Math.min(r.top,innerHeight-hh-12))+'px';hv.classList.add('show')}
+function hideHover(){clearTimeout(hT);hv.classList.remove('show')}
+/* ---------- interactions ---------- */
+tl.addEventListener('pointerdown',function(e){
+  if(e.button!==0)return;var t=e.target,p;hideHover();
+  if(p=t.closest('.port.out')){startConnect(e,p.dataset.id);return}
+  if(p=t.closest('.hdl')){startResize(e,p.dataset.id,p.dataset.k);return}
+  if(p=t.closest('.bx'))startMove(e,p.dataset.id)});
+function startMove(e,id){e.preventDefault();var it=S.t[id],y0=e.clientY,x0=e.clientX,s0=it.start,d0=it.end-it.start,moved=false;document.body.classList.add('rm-drag');
+  function mv(ev){var dy=ev.clientY-y0,dx=ev.clientX-x0;if(!moved&&Math.abs(dy)<4&&Math.abs(dx)<4)return;moved=true;
+    var ns=Math.max(T0,Math.min(T1-d0,snap(s0+dy/LAY.sc)));it.start=ns;it.end=ns+d0;
+    var px=ev.clientX-tl.getBoundingClientRect().left;PH.forEach(function(p){var l=LAY.lanes[p];if(px>=l.x&&px<l.x+l.w+LG/2)it.phase=p});render()}
+  function up(){removeEventListener('pointermove',mv);removeEventListener('pointerup',up);document.body.classList.remove('rm-drag');if(!moved)openDetail(id);else commit()}
+  addEventListener('pointermove',mv);addEventListener('pointerup',up)}
+function startResize(e,id,k){e.preventDefault();e.stopPropagation();var it=S.t[id],y0=e.clientY,s0=it.start,e0=it.end;document.body.classList.add('rm-drag');
+  function mv(ev){var dt=(ev.clientY-y0)/LAY.sc;if(k==='t')it.start=Math.max(T0,Math.min(e0-.25,snap(s0+dt)));else it.end=Math.min(T1,Math.max(s0+.25,snap(e0+dt)));render()}
+  function up(){removeEventListener('pointermove',mv);removeEventListener('pointerup',up);document.body.classList.remove('rm-drag');commit()}
+  addEventListener('pointermove',mv);addEventListener('pointerup',up)}
+function startConnect(e,from){e.preventDefault();e.stopPropagation();conn={from:from,over:null};render();var svg=tl.querySelector('svg.cn'),tmp=document.createElementNS(ns,'path');tmp.setAttribute('class','cp tmp');svg.appendChild(tmp);var o=portOut(from);document.body.classList.add('rm-drag');
+  function target(ev){var el=document.elementFromPoint(ev.clientX,ev.clientY),b=el&&el.closest&&el.closest('.bx,.port');return b&&b.dataset.id&&b.dataset.id!==from?b.dataset.id:null}
+  function mv(ev){var r=tl.getBoundingClientRect();tmp.setAttribute('d',bez(o.x,o.y,ev.clientX-r.left,ev.clientY-r.top));var t=target(ev);[].forEach.call(tl.querySelectorAll('.bx'),function(x){x.classList.toggle('tgt',x.dataset.id===t)})}
+  function up(ev){removeEventListener('pointermove',mv);removeEventListener('pointerup',up);document.body.classList.remove('rm-drag');var t=target(ev);conn=null;render();if(t)addDep(from,t,ev.clientX,ev.clientY)}
+  addEventListener('pointermove',mv);addEventListener('pointerup',up)}
+function nextId(){var m=0;S.deps.forEach(function(d){m=Math.max(m,parseInt(d.id.slice(1),10)||0)});return 'D'+(m+1)}
+function addDep(f,t,x,y){if(S.deps.some(function(d){return d.from===f&&d.to===t})){G1.toast(f+' \u2192 '+t+' already exists');return}
+  var d={id:nextId(),from:f,to:t,text:'enables \u2026'};S.deps.push(d);commit();openEditor(d.id,x,y);setTimeout(function(){var i=document.getElementById('deText');i.focus();i.select()},60)}
+tl.addEventListener('click',function(e){var p=e.target.closest('.cph');if(p){selDep=p.dataset.dep;render();openEditor(selDep,e.clientX,e.clientY)}});
+tl.addEventListener('pointerover',function(e){var b=e.target.closest('.bx,.port');var id=b?b.dataset.id:null;if(id!==hoverId&&!document.body.classList.contains('rm-drag')){hoverId=id;hideHover();render();if(id&&e.target.closest('.bx'))hT=setTimeout(function(){showHover(id)},260)}});
+tl.addEventListener('pointerleave',function(){hideHover();if(hoverId){hoverId=null;render()}});
+addEventListener('scroll',hideHover,{passive:true});
+document.getElementById('depRows').addEventListener('click',function(e){var b=e.target.closest('[data-edit]');if(b){var r=b.getBoundingClientRect();selDep=b.dataset.edit;render();openEditor(b.dataset.edit,r.left-330,r.top)}});
+/* ---------- dependency editor ---------- */
+var ed=document.getElementById('depedit'),edFrom=document.getElementById('deFrom'),edTo=document.getElementById('deTo'),edText=document.getElementById('deText'),curDep=null;
+function fillSel(sel,val){sel.innerHTML=Object.keys(S.t).map(function(id){return '<option value="'+id+'"'+(id===val?' selected':'')+'>'+id+' \u00b7 '+G1.esc(R.inits[id].short)+'</option>'}).join('')}
+function openEditor(id,x,y){var d=S.deps.filter(function(q){return q.id===id})[0];if(!d)return;curDep=d;document.getElementById('deId').textContent=d.id+' \u00b7 dependency';fillSel(edFrom,d.from);fillSel(edTo,d.to);edText.value=d.text;warn();
+  ed.classList.add('show');var w=ed.offsetWidth,h=ed.offsetHeight;ed.style.left=Math.max(12,Math.min(x+12,innerWidth-w-12))+'px';ed.style.top=Math.max(12,Math.min(y+12,innerHeight-h-12))+'px'}
+function warn(){var w=warnFor(curDep);document.getElementById('deWarn').innerHTML=w.map(function(x){return '<div>\u26A0 '+G1.esc(x)+'</div>'}).join('')}
+function closeEditor(){ed.classList.remove('show');selDep=null;curDep=null;render()}
+function upd(){if(!curDep)return;curDep.from=edFrom.value;curDep.to=edTo.value;curDep.text=edText.value;curDep.orig=false;warn();G1.save(KEY,S);render();checks();depTable()}
+[edFrom,edTo].forEach(function(s){s.addEventListener('change',function(){if(edFrom.value===edTo.value){document.getElementById('deWarn').innerHTML='<div>\u26A0 A box cannot depend on itself.</div>';return}upd()})});
+edText.addEventListener('input',function(){if(curDep){curDep.text=edText.value;curDep.orig=false;G1.save(KEY,S);depTable()}});
+document.getElementById('deClose').addEventListener('click',closeEditor);
+document.getElementById('deDel').addEventListener('click',function(){if(!curDep)return;S.deps=S.deps.filter(function(d){return d!==curDep});ed.classList.remove('show');curDep=null;selDep=null;commit();G1.toast('Dependency deleted')});
+document.addEventListener('pointerdown',function(e){if(ed.classList.contains('show')&&!ed.contains(e.target)&&!e.target.closest('.cph')&&!e.target.closest('[data-edit]'))closeEditor()});
+/* ---------- detail panel ---------- */
+var dp=document.getElementById('detail');
+function openDetail(id){selBox=id;[].forEach.call(dp.querySelectorAll('.ds'),function(s){s.classList.toggle('on',s.dataset.id===id)});var s=dp.querySelector('.ds[data-id="'+id+'"]'),it=S.t[id];
+  s.querySelector('[data-time]').textContent='\u2192 now '+range(it,false)+' ('+dur(it)+', '+PHN[it.phase]+')';
+  var inn=S.deps.filter(function(d){return d.to===id}),out=S.deps.filter(function(d){return d.from===id});
+  s.querySelector('[data-deps]').innerHTML=inn.map(function(d){return '<button type="button" data-go="'+d.from+'">\u2190 '+d.from+' ('+d.id+')</button>'}).join('')+out.map(function(d){return '<button class="o" type="button" data-go="'+d.to+'">\u2192 '+d.to+' ('+d.id+')</button>'}).join('');
+  dp.classList.add('show');render()}
+function closeDetail(){dp.classList.remove('show');selBox=null;render()}
+document.getElementById('dtClose').addEventListener('click',closeDetail);
+dp.addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b)openDetail(b.dataset.go)});
+document.addEventListener('pointerdown',function(e){if(dp.classList.contains('show')&&!dp.contains(e.target)&&!e.target.closest('.bx')&&!document.getElementById('drawer').contains(e.target)&&!e.target.closest('.gnav'))closeDetail()});
+var hp=document.getElementById('rmHelp'),hb=document.getElementById('rmHelpBtn');
+hb.addEventListener('click',function(e){e.stopPropagation();var r=hb.getBoundingClientRect();hp.style.left=Math.max(12,Math.min(r.right-330,innerWidth-342))+'px';hp.style.top=(r.bottom+8)+'px';hp.classList.toggle('show')});
+document.addEventListener('pointerdown',function(e){if(hp.classList.contains('show')&&!hp.contains(e.target)&&e.target!==hb)hp.classList.remove('show')});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){hp.classList.remove('show');if(ed.classList.contains('show'))closeEditor();else if(dp.classList.contains('show'))closeDetail()}});
+G1.reveal=function(el){var s=el.closest('.ds');if(s)openDetail(s.dataset.id)};
+document.getElementById('rmReset').addEventListener('click',function(){if(!confirm('Reset the timeline and dependencies to the original version?'))return;S=defaults();selBox=null;selDep=null;commit();G1.toast('Timeline reset')});
+document.getElementById('rmCopy').addEventListener('click',function(){var s=JSON.stringify(S);(navigator.clipboard?navigator.clipboard.writeText(s):Promise.reject()).then(function(){G1.toast('Timeline data copied')},function(){window.prompt('Copy this timeline data:',s)})});
+/* ---------- go ---------- */
+render();checks();depTable();
+if(window.ResizeObserver)new ResizeObserver(function(){if(!document.body.classList.contains('rm-drag'))render()}).observe(tl);else addEventListener('resize',render);
+function focusHash(){var id=(location.hash||'').slice(1);if(!id||!LAY.boxes[id])return;scrollTo({top:0,behavior:'smooth'});selBox=id;render();var el=tl.querySelector('.bx[data-id="'+id+'"]');if(el){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash')}setTimeout(function(){if(selBox===id&&!dp.classList.contains('show')){selBox=null;render()}},2600)}
+setTimeout(focusHash,350);addEventListener('hashchange',focusHash);
+})();
+
+</script>
+</body>
+</html>
